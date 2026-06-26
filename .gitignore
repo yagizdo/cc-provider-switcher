@@ -7,6 +7,5 @@ settings.local.json
 *.log
 
 # Claude internal files
-.claude/plans/
-.claude/memory/
+.claude/
 docs/brainstorms/
