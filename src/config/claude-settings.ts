@@ -14,6 +14,9 @@ export const ENV_KEYS = [
   'ANTHROPIC_DEFAULT_OPUS_MODEL',
   'ANTHROPIC_DEFAULT_HAIKU_MODEL',
   'CLAUDE_CODE_SUBAGENT_MODEL',
+  'ANTHROPIC_DEFAULT_SONNET_MODEL_SUPPORTED_CAPABILITIES',
+  'ANTHROPIC_DEFAULT_OPUS_MODEL_SUPPORTED_CAPABILITIES',
+  'ANTHROPIC_DEFAULT_HAIKU_MODEL_SUPPORTED_CAPABILITIES',
 ] as const
 
 type EnvBlock = Partial<Record<(typeof ENV_KEYS)[number], string>>
@@ -46,7 +49,11 @@ async function applyEnvBlock(filePath: string, envBlock: EnvBlock): Promise<void
   const settings = await readSettings(filePath)
   const env = { ...(settings.env ?? {}) }
   for (const [k, v] of Object.entries(envBlock)) {
-    if (v !== undefined) env[k] = v
+    if (v === '') {
+      delete env[k]
+    } else if (v !== undefined) {
+      env[k] = v
+    }
   }
   settings.env = env
   settings[CCS_MANAGED_KEY] = true

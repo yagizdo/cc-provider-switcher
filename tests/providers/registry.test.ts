@@ -15,6 +15,36 @@ describe('loadRegistry', () => {
   it('all providers pass Zod validation', () => {
     expect(() => loadRegistry()).not.toThrow()
   })
+
+  it('deepseek has supportedCapabilities', () => {
+    const registry = loadRegistry()
+    const deepseek = registry.providers['deepseek']
+    expect(deepseek.supportedCapabilities).toContain('effort')
+    expect(deepseek.supportedCapabilities).toContain('thinking')
+  })
+
+  it('minimax has adaptive_thinking capability', () => {
+    const registry = loadRegistry()
+    const minimax = registry.providers['minimax']
+    expect(minimax.supportedCapabilities).toContain('adaptive_thinking')
+  })
+
+  it('claude has no supportedCapabilities (native)', () => {
+    const registry = loadRegistry()
+    expect(registry.providers['claude'].supportedCapabilities).toBeUndefined()
+  })
+
+  it('deepseek uses updated model names', () => {
+    const registry = loadRegistry()
+    const deepseek = registry.providers['deepseek']
+    expect(deepseek.models.sonnet).toBe('deepseek-v4-flash')
+    expect(deepseek.models.opus).toBe('deepseek-v4-pro')
+  })
+
+  it('minimax uses M3 model', () => {
+    const registry = loadRegistry()
+    expect(registry.providers['minimax'].models.sonnet).toBe('MiniMax-M3')
+  })
 })
 
 describe('resolveProvider', () => {

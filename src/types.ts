@@ -13,6 +13,8 @@ export const ProviderSchema = z.object({
   }),
   regions: z.record(z.string(), z.string()).optional(),
   optional: z.boolean().optional(),
+  supportedCapabilities: z.array(z.string()).optional(),
+  thinkingNote: z.string().optional(),
 })
 
 export const ProviderRegistrySchema = z.object({

@@ -31,12 +31,15 @@ export function registerStatusCommand(program: Command): void {
         const key = env['ANTHROPIC_AUTH_TOKEN'] ?? ''
 
         console.log(`\n${scope} settings:`)
-        display.table([
+        const caps = env['ANTHROPIC_DEFAULT_SONNET_MODEL_SUPPORTED_CAPABILITIES']
+        const rows: [string, string][] = [
           ['Provider', providerName],
           ['Base URL', baseUrl],
           ['Model', model],
           ['API Key', key ? display.maskKey(key) : '(not set)'],
-        ])
+        ]
+        if (caps) rows.push(['Capabilities', caps])
+        display.table(rows)
       }
 
       const hasAny =
