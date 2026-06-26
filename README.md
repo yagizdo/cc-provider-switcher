@@ -120,8 +120,8 @@ When Claude Code picks haiku/sonnet/opus, ccs maps them to the actual model IDs 
 |----------|-------|--------|------|
 | DeepSeek | `deepseek-v4-flash` | `deepseek-v4-flash` | `deepseek-v4-pro` |
 | MiniMax | `MiniMax-M3` | `MiniMax-M3` | `MiniMax-M3` |
-| Kimi | `kimi-k2.7-code` | `kimi-k2.7-code` | `kimi-k2.7-code` |
-| Qwen | `qwen3.7-max` | `qwen3.7-max` | `qwen3.7-max` |
+| Kimi | `kimi-k2.7-code-highspeed` | `kimi-k2.7-code-highspeed` | `kimi-k2.7-code` |
+| Qwen | `qwen3.7-plus` | `qwen3.7-plus` | `qwen3.7-max` |
 | GLM | `glm-5.2` | `glm-5.2` | `glm-5.2` |
 | Seed/Doubao | `ark-code-latest` | `ark-code-latest` | `ark-code-latest` |
 | StepFun | `step-3.7-flash` | `step-3.7-flash` | `step-3.7-flash` |

@@ -47,7 +47,7 @@
         "global": "https://api.moonshot.ai/anthropic",
         "china": "https://api.moonshot.cn/anthropic"
       },
-      "models": { "sonnet": "kimi-k2.7-code", "opus": "kimi-k2.7-code", "haiku": "kimi-k2.7-code" },
+      "models": { "sonnet": "kimi-k2.7-code-highspeed", "opus": "kimi-k2.7-code", "haiku": "kimi-k2.7-code-highspeed" },
       "supportedCapabilities": ["effort", "thinking"]
     },
     "qwen": {
@@ -61,9 +61,9 @@
         "china": "https://coding.dashscope.aliyuncs.com/apps/anthropic"
       },
       "models": {
-        "sonnet": "qwen3.7-max",
+        "sonnet": "qwen3.7-plus",
         "opus": "qwen3.7-max",
-        "haiku": "qwen3.7-max"
+        "haiku": "qwen3.7-plus"
       },
       "supportedCapabilities": ["effort", "thinking"],
       "thinkingNote": "Supports thinking_budget for token-level control"
