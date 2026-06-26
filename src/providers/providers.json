@@ -1,0 +1,113 @@
+{
+  "providers": {
+    "deepseek": {
+      "name": "DeepSeek",
+      "baseUrl": "https://api.deepseek.com/anthropic",
+      "defaultModel": "deepseek-chat",
+      "aliases": ["ds"],
+      "keyEnvVar": "DEEPSEEK_API_KEY",
+      "models": { "sonnet": "deepseek-chat", "opus": "deepseek-chat", "haiku": "deepseek-chat" }
+    },
+    "minimax": {
+      "name": "MiniMax",
+      "baseUrl": "https://api.minimax.io/anthropic",
+      "defaultModel": "MiniMax-M2.5",
+      "aliases": ["mm"],
+      "keyEnvVar": "MINIMAX_API_KEY",
+      "regions": {
+        "global": "https://api.minimax.io/anthropic",
+        "china": "https://api.minimaxi.com/anthropic"
+      },
+      "models": { "sonnet": "MiniMax-M2.5", "opus": "MiniMax-M2.5", "haiku": "MiniMax-M2.5" }
+    },
+    "claude": {
+      "name": "Claude (Anthropic)",
+      "baseUrl": "https://api.anthropic.com/",
+      "defaultModel": "claude-sonnet-4-5-20250929",
+      "aliases": ["anthropic", "sonnet"],
+      "keyEnvVar": "CLAUDE_API_KEY",
+      "optional": true,
+      "models": {
+        "sonnet": "claude-sonnet-4-5-20250929",
+        "opus": "claude-opus-4-6",
+        "haiku": "claude-haiku-4-5-20251001"
+      }
+    },
+    "kimi": {
+      "name": "Kimi",
+      "baseUrl": "https://api.moonshot.ai/anthropic",
+      "defaultModel": "kimi-k2.5",
+      "aliases": ["kimi2"],
+      "keyEnvVar": "KIMI_API_KEY",
+      "regions": {
+        "global": "https://api.moonshot.ai/anthropic",
+        "china": "https://api.moonshot.cn/anthropic"
+      },
+      "models": { "sonnet": "kimi-k2.5", "opus": "kimi-k2.5", "haiku": "kimi-k2.5" }
+    },
+    "qwen": {
+      "name": "Qwen",
+      "baseUrl": "https://coding-intl.dashscope.aliyuncs.com/apps/anthropic",
+      "defaultModel": "qwen3-max-2026-01-23",
+      "aliases": [],
+      "keyEnvVar": "QWEN_API_KEY",
+      "regions": {
+        "global": "https://coding-intl.dashscope.aliyuncs.com/apps/anthropic",
+        "china": "https://coding.dashscope.aliyuncs.com/apps/anthropic"
+      },
+      "models": {
+        "sonnet": "qwen3-max-2026-01-23",
+        "opus": "qwen3-max-2026-01-23",
+        "haiku": "qwen3-max-2026-01-23"
+      }
+    },
+    "glm": {
+      "name": "GLM",
+      "baseUrl": "https://api.z.ai/api/anthropic",
+      "defaultModel": "glm-5",
+      "aliases": ["glm5"],
+      "keyEnvVar": "GLM_API_KEY",
+      "regions": {
+        "global": "https://api.z.ai/api/anthropic",
+        "china": "https://open.bigmodel.cn/api/anthropic"
+      },
+      "models": { "sonnet": "glm-5", "opus": "glm-5", "haiku": "glm-5" }
+    },
+    "seed": {
+      "name": "Seed/Doubao",
+      "baseUrl": "https://ark.cn-beijing.volces.com/api/coding",
+      "defaultModel": "ark-code-latest",
+      "aliases": ["doubao"],
+      "keyEnvVar": "ARK_API_KEY",
+      "models": {
+        "sonnet": "ark-code-latest",
+        "opus": "ark-code-latest",
+        "haiku": "ark-code-latest"
+      }
+    },
+    "stepfun": {
+      "name": "StepFun",
+      "baseUrl": "https://api.stepfun.ai/v1/anthropic",
+      "defaultModel": "step-3.5-flash",
+      "aliases": ["sf"],
+      "keyEnvVar": "STEPFUN_API_KEY",
+      "models": {
+        "sonnet": "step-3.5-flash",
+        "opus": "step-3.5-flash",
+        "haiku": "step-3.5-flash"
+      }
+    },
+    "openrouter": {
+      "name": "OpenRouter",
+      "baseUrl": "https://openrouter.ai/api",
+      "defaultModel": "anthropic/claude-sonnet-4.5",
+      "aliases": ["or"],
+      "keyEnvVar": "OPENROUTER_API_KEY",
+      "models": {
+        "sonnet": "anthropic/claude-sonnet-4.5",
+        "opus": "anthropic/claude-opus-4.6",
+        "haiku": "anthropic/claude-haiku-4.5"
+      }
+    }
+  }
+}
