@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.2.1 — 2026-06-26
+
+### Bug Fixes
+
+- Fix `ccs --version` always showing `0.1.0` by reading version from `package.json` at runtime instead of hardcoding it (2158e23)
+- Add "Updating" section to README explaining that `npm install -g cc-provider-switcher@latest` is needed to cross major version boundaries (2158e23)
+
+**Full Changelog:** https://github.com/yagizdo/cc-provider-switcher/compare/v0.2.0...v0.2.1
+
 ## v0.2.0 — 2026-06-26
 
 ### Features
