@@ -49,7 +49,11 @@ async function applyEnvBlock(filePath: string, envBlock: EnvBlock): Promise<void
   const settings = await readSettings(filePath)
   const env = { ...(settings.env ?? {}) }
   for (const [k, v] of Object.entries(envBlock)) {
-    if (v !== undefined) env[k] = v
+    if (v === '') {
+      delete env[k]
+    } else if (v !== undefined) {
+      env[k] = v
+    }
   }
   settings.env = env
   settings[CCS_MANAGED_KEY] = true

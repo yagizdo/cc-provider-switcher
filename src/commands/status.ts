@@ -32,7 +32,6 @@ export function registerStatusCommand(program: Command): void {
 
         console.log(`\n${scope} settings:`)
         const caps = env['ANTHROPIC_DEFAULT_SONNET_MODEL_SUPPORTED_CAPABILITIES']
-        const effortLevel = env['CLAUDE_CODE_EFFORT_LEVEL']
         const rows: [string, string][] = [
           ['Provider', providerName],
           ['Base URL', baseUrl],
@@ -40,7 +39,6 @@ export function registerStatusCommand(program: Command): void {
           ['API Key', key ? display.maskKey(key) : '(not set)'],
         ]
         if (caps) rows.push(['Capabilities', caps])
-        if (effortLevel) rows.push(['Effort Level', effortLevel])
         display.table(rows)
       }
 

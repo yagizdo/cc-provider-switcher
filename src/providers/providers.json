@@ -21,7 +21,7 @@
         "china": "https://api.minimaxi.com/anthropic"
       },
       "models": { "sonnet": "MiniMax-M3", "opus": "MiniMax-M3", "haiku": "MiniMax-M3" },
-      "supportedCapabilities": ["effort", "thinking", "adaptive_thinking"],
+      "supportedCapabilities": ["adaptive_thinking"],
       "thinkingNote": "Only adaptive/disabled thinking (enabled returns 400)"
     },
     "claude": {
