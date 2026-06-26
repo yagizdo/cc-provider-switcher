@@ -1,0 +1,51 @@
+{
+  "name": "cc-provider-switcher",
+  "version": "0.1.0",
+  "description": "Switch Claude Code between AI providers with one command",
+  "type": "module",
+  "bin": {
+    "ccs": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": {
+      "default": "./dist/cli.js"
+    }
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsx src/cli.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "claude-code",
+    "ai",
+    "provider",
+    "switcher",
+    "cli"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^5.6.2",
+    "commander": "^15.0.0",
+    "comment-json": "^5.0.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^26.0.1",
+    "memfs": "^4.57.8",
+    "tsup": "^8.5.1",
+    "tsx": "^4.22.4",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.9"
+  }
+}
