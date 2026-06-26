@@ -26,6 +26,14 @@ Or use without installing:
 npx cc-provider-switcher deepseek
 ```
 
+## Updating
+
+```sh
+npm install -g cc-provider-switcher@latest
+```
+
+> `npm update` won't cross major versions — always use `@latest` to get the newest release.
+
 ---
 
 ## Quick start
