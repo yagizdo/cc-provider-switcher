@@ -5,3 +5,8 @@ dist/
 *.tgz
 settings.local.json
 *.log
+
+# Claude internal files
+.claude/plans/
+.claude/memory/
+docs/brainstorms/
