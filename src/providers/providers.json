@@ -3,22 +3,26 @@
     "deepseek": {
       "name": "DeepSeek",
       "baseUrl": "https://api.deepseek.com/anthropic",
-      "defaultModel": "deepseek-chat",
+      "defaultModel": "deepseek-v4-flash",
       "aliases": ["ds"],
       "keyEnvVar": "DEEPSEEK_API_KEY",
-      "models": { "sonnet": "deepseek-chat", "opus": "deepseek-chat", "haiku": "deepseek-chat" }
+      "models": { "sonnet": "deepseek-v4-flash", "opus": "deepseek-v4-pro", "haiku": "deepseek-v4-flash" },
+      "supportedCapabilities": ["effort", "thinking"],
+      "thinkingNote": "budget_tokens ignored, uses reasoning_effort internally"
     },
     "minimax": {
       "name": "MiniMax",
       "baseUrl": "https://api.minimax.io/anthropic",
-      "defaultModel": "MiniMax-M2.5",
+      "defaultModel": "MiniMax-M3",
       "aliases": ["mm"],
       "keyEnvVar": "MINIMAX_API_KEY",
       "regions": {
         "global": "https://api.minimax.io/anthropic",
         "china": "https://api.minimaxi.com/anthropic"
       },
-      "models": { "sonnet": "MiniMax-M2.5", "opus": "MiniMax-M2.5", "haiku": "MiniMax-M2.5" }
+      "models": { "sonnet": "MiniMax-M3", "opus": "MiniMax-M3", "haiku": "MiniMax-M3" },
+      "supportedCapabilities": ["effort", "thinking", "adaptive_thinking"],
+      "thinkingNote": "Only adaptive/disabled thinking (enabled returns 400)"
     },
     "claude": {
       "name": "Claude (Anthropic)",
@@ -43,7 +47,8 @@
         "global": "https://api.moonshot.ai/anthropic",
         "china": "https://api.moonshot.cn/anthropic"
       },
-      "models": { "sonnet": "kimi-k2.5", "opus": "kimi-k2.5", "haiku": "kimi-k2.5" }
+      "models": { "sonnet": "kimi-k2.5", "opus": "kimi-k2.5", "haiku": "kimi-k2.5" },
+      "supportedCapabilities": ["effort", "thinking"]
     },
     "qwen": {
       "name": "Qwen",
@@ -59,7 +64,9 @@
         "sonnet": "qwen3-max-2026-01-23",
         "opus": "qwen3-max-2026-01-23",
         "haiku": "qwen3-max-2026-01-23"
-      }
+      },
+      "supportedCapabilities": ["effort", "thinking"],
+      "thinkingNote": "Supports thinking_budget for token-level control"
     },
     "glm": {
       "name": "GLM",
@@ -71,7 +78,9 @@
         "global": "https://api.z.ai/api/anthropic",
         "china": "https://open.bigmodel.cn/api/anthropic"
       },
-      "models": { "sonnet": "glm-5", "opus": "glm-5", "haiku": "glm-5" }
+      "models": { "sonnet": "glm-5", "opus": "glm-5", "haiku": "glm-5" },
+      "supportedCapabilities": ["effort", "max_effort", "thinking"],
+      "thinkingNote": "Two-tier effort: high and max"
     },
     "seed": {
       "name": "Seed/Doubao",
@@ -83,7 +92,9 @@
         "sonnet": "ark-code-latest",
         "opus": "ark-code-latest",
         "haiku": "ark-code-latest"
-      }
+      },
+      "supportedCapabilities": ["thinking"],
+      "thinkingNote": "Thinking on/off only, no effort levels"
     },
     "stepfun": {
       "name": "StepFun",
@@ -95,7 +106,9 @@
         "sonnet": "step-3.5-flash",
         "opus": "step-3.5-flash",
         "haiku": "step-3.5-flash"
-      }
+      },
+      "supportedCapabilities": ["effort", "thinking"],
+      "thinkingNote": "Effort levels: none/low/medium/high"
     },
     "openrouter": {
       "name": "OpenRouter",

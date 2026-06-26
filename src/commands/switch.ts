@@ -21,6 +21,7 @@ async function doSwitch(
     process.exit(1)
   }
 
+  const caps = provider.supportedCapabilities?.join(',')
   const envBlock = {
     ANTHROPIC_BASE_URL: baseUrl,
     ANTHROPIC_AUTH_TOKEN: apiKey ?? '',
@@ -29,6 +30,13 @@ async function doSwitch(
     ANTHROPIC_DEFAULT_OPUS_MODEL: provider.models.opus,
     ANTHROPIC_DEFAULT_HAIKU_MODEL: provider.models.haiku,
     CLAUDE_CODE_SUBAGENT_MODEL: provider.models.sonnet,
+    ...(caps
+      ? {
+          ANTHROPIC_DEFAULT_SONNET_MODEL_SUPPORTED_CAPABILITIES: caps,
+          ANTHROPIC_DEFAULT_OPUS_MODEL_SUPPORTED_CAPABILITIES: caps,
+          ANTHROPIC_DEFAULT_HAIKU_MODEL_SUPPORTED_CAPABILITIES: caps,
+        }
+      : {}),
   }
 
   if (scope === 'project') {
@@ -42,6 +50,7 @@ async function doSwitch(
   display.info(`Base URL: ${baseUrl}`)
   display.info(`Model: ${provider.defaultModel}`)
   if (apiKey) display.info(`Key: ${display.maskKey(apiKey)}`)
+  if (provider.thinkingNote) display.info(`Thinking: ${provider.thinkingNote}`)
 }
 
 export function registerSwitchCommand(program: Command): void {

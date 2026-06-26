@@ -35,7 +35,7 @@ describe('switch to deepseek', () => {
     )
     const settings = await readUserSettings(userSettingsPath)
     expect(settings.env?.ANTHROPIC_BASE_URL).toBe('https://api.deepseek.com/anthropic')
-    expect(settings.env?.ANTHROPIC_MODEL).toBe('deepseek-chat')
+    expect(settings.env?.ANTHROPIC_MODEL).toBe('deepseek-v4-flash')
     expect(settings.env?.ANTHROPIC_AUTH_TOKEN).toBe('sk-test')
     expect(settings.ccsManaged).toBe(true)
   })
@@ -77,6 +77,42 @@ describe('reset removes managed vars, keeps others', () => {
     const settings = await readUserSettings(userSettingsPath)
     expect(settings.env?.ANTHROPIC_BASE_URL).toBeUndefined()
     expect(settings.env?.MY_CUSTOM).toBe('keep')
+  })
+})
+
+describe('capability env vars for deepseek', () => {
+  it('writes supportedCapabilities to settings', async () => {
+    const provider = resolveProvider('deepseek')
+    const caps = provider.supportedCapabilities?.join(',') ?? ''
+    await writeUserSettings(
+      {
+        ANTHROPIC_DEFAULT_SONNET_MODEL_SUPPORTED_CAPABILITIES: caps,
+        ANTHROPIC_DEFAULT_OPUS_MODEL_SUPPORTED_CAPABILITIES: caps,
+        ANTHROPIC_DEFAULT_HAIKU_MODEL_SUPPORTED_CAPABILITIES: caps,
+      },
+      userSettingsPath
+    )
+    const settings = await readUserSettings(userSettingsPath)
+    expect(settings.env?.ANTHROPIC_DEFAULT_SONNET_MODEL_SUPPORTED_CAPABILITIES).toBe('effort,thinking')
+    expect(settings.env?.ANTHROPIC_DEFAULT_OPUS_MODEL_SUPPORTED_CAPABILITIES).toBe('effort,thinking')
+    expect(settings.env?.ANTHROPIC_DEFAULT_HAIKU_MODEL_SUPPORTED_CAPABILITIES).toBe('effort,thinking')
+  })
+
+  it('reset clears capability env vars', async () => {
+    const caps = 'effort,thinking'
+    await writeUserSettings(
+      {
+        ANTHROPIC_BASE_URL: 'https://api.deepseek.com/anthropic',
+        ANTHROPIC_DEFAULT_SONNET_MODEL_SUPPORTED_CAPABILITIES: caps,
+        ANTHROPIC_DEFAULT_OPUS_MODEL_SUPPORTED_CAPABILITIES: caps,
+        ANTHROPIC_DEFAULT_HAIKU_MODEL_SUPPORTED_CAPABILITIES: caps,
+      },
+      userSettingsPath
+    )
+    await clearManagedSettings('user', userSettingsPath, projectSettingsPath)
+    const settings = await readUserSettings(userSettingsPath)
+    expect(settings.env?.ANTHROPIC_DEFAULT_SONNET_MODEL_SUPPORTED_CAPABILITIES).toBeUndefined()
+    expect(settings.env?.ANTHROPIC_DEFAULT_OPUS_MODEL_SUPPORTED_CAPABILITIES).toBeUndefined()
   })
 })
 
