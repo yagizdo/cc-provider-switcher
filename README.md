@@ -112,6 +112,24 @@ ccs seed
 - `native` — Claude Code's built-in detection applies
 - `passthrough` — depends on the model routed through OpenRouter
 
+### Model mapping
+
+When Claude Code picks haiku/sonnet/opus, ccs maps them to the actual model IDs below:
+
+| Provider | Haiku | Sonnet | Opus |
+|----------|-------|--------|------|
+| DeepSeek | `deepseek-v4-flash` | `deepseek-v4-flash` | `deepseek-v4-pro` |
+| MiniMax | `MiniMax-M3` | `MiniMax-M3` | `MiniMax-M3` |
+| Kimi | `kimi-k2.7-code` | `kimi-k2.7-code` | `kimi-k2.7-code` |
+| Qwen | `qwen3.7-max` | `qwen3.7-max` | `qwen3.7-max` |
+| GLM | `glm-5.2` | `glm-5.2` | `glm-5.2` |
+| Seed/Doubao | `ark-code-latest` | `ark-code-latest` | `ark-code-latest` |
+| StepFun | `step-3.7-flash` | `step-3.7-flash` | `step-3.7-flash` |
+| OpenRouter | `anthropic/claude-haiku-4.5` | `anthropic/claude-sonnet-4.6` | `anthropic/claude-opus-4.8` |
+| Claude (Anthropic) | `claude-haiku-4-5-20251001` | `claude-sonnet-4-6` | `claude-opus-4-8` |
+
+Override any ID via `providerOverrides` in `~/.ccs/config.json` — see [Override model IDs](#override-model-ids).
+
 ---
 
 ## Configuration

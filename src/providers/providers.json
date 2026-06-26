@@ -27,33 +27,33 @@
     "claude": {
       "name": "Claude (Anthropic)",
       "baseUrl": "https://api.anthropic.com/",
-      "defaultModel": "claude-sonnet-4-5-20250929",
+      "defaultModel": "claude-sonnet-4-6",
       "aliases": ["anthropic", "sonnet"],
       "keyEnvVar": "CLAUDE_API_KEY",
       "optional": true,
       "models": {
-        "sonnet": "claude-sonnet-4-5-20250929",
-        "opus": "claude-opus-4-6",
+        "sonnet": "claude-sonnet-4-6",
+        "opus": "claude-opus-4-8",
         "haiku": "claude-haiku-4-5-20251001"
       }
     },
     "kimi": {
       "name": "Kimi",
       "baseUrl": "https://api.moonshot.ai/anthropic",
-      "defaultModel": "kimi-k2.5",
+      "defaultModel": "kimi-k2.7-code",
       "aliases": ["kimi2"],
       "keyEnvVar": "KIMI_API_KEY",
       "regions": {
         "global": "https://api.moonshot.ai/anthropic",
         "china": "https://api.moonshot.cn/anthropic"
       },
-      "models": { "sonnet": "kimi-k2.5", "opus": "kimi-k2.5", "haiku": "kimi-k2.5" },
+      "models": { "sonnet": "kimi-k2.7-code", "opus": "kimi-k2.7-code", "haiku": "kimi-k2.7-code" },
       "supportedCapabilities": ["effort", "thinking"]
     },
     "qwen": {
       "name": "Qwen",
       "baseUrl": "https://coding-intl.dashscope.aliyuncs.com/apps/anthropic",
-      "defaultModel": "qwen3-max-2026-01-23",
+      "defaultModel": "qwen3.7-max",
       "aliases": [],
       "keyEnvVar": "QWEN_API_KEY",
       "regions": {
@@ -61,9 +61,9 @@
         "china": "https://coding.dashscope.aliyuncs.com/apps/anthropic"
       },
       "models": {
-        "sonnet": "qwen3-max-2026-01-23",
-        "opus": "qwen3-max-2026-01-23",
-        "haiku": "qwen3-max-2026-01-23"
+        "sonnet": "qwen3.7-max",
+        "opus": "qwen3.7-max",
+        "haiku": "qwen3.7-max"
       },
       "supportedCapabilities": ["effort", "thinking"],
       "thinkingNote": "Supports thinking_budget for token-level control"
@@ -71,14 +71,14 @@
     "glm": {
       "name": "GLM",
       "baseUrl": "https://api.z.ai/api/anthropic",
-      "defaultModel": "glm-5",
+      "defaultModel": "glm-5.2",
       "aliases": ["glm5"],
       "keyEnvVar": "GLM_API_KEY",
       "regions": {
         "global": "https://api.z.ai/api/anthropic",
         "china": "https://open.bigmodel.cn/api/anthropic"
       },
-      "models": { "sonnet": "glm-5", "opus": "glm-5", "haiku": "glm-5" },
+      "models": { "sonnet": "glm-5.2", "opus": "glm-5.2", "haiku": "glm-5.2" },
       "supportedCapabilities": ["effort", "max_effort", "thinking"],
       "thinkingNote": "Two-tier effort: high and max"
     },
@@ -99,13 +99,13 @@
     "stepfun": {
       "name": "StepFun",
       "baseUrl": "https://api.stepfun.ai/v1/anthropic",
-      "defaultModel": "step-3.5-flash",
+      "defaultModel": "step-3.7-flash",
       "aliases": ["sf"],
       "keyEnvVar": "STEPFUN_API_KEY",
       "models": {
-        "sonnet": "step-3.5-flash",
-        "opus": "step-3.5-flash",
-        "haiku": "step-3.5-flash"
+        "sonnet": "step-3.7-flash",
+        "opus": "step-3.7-flash",
+        "haiku": "step-3.7-flash"
       },
       "supportedCapabilities": ["effort", "thinking"],
       "thinkingNote": "Effort levels: none/low/medium/high"
@@ -113,12 +113,12 @@
     "openrouter": {
       "name": "OpenRouter",
       "baseUrl": "https://openrouter.ai/api",
-      "defaultModel": "anthropic/claude-sonnet-4.5",
+      "defaultModel": "anthropic/claude-sonnet-4.6",
       "aliases": ["or"],
       "keyEnvVar": "OPENROUTER_API_KEY",
       "models": {
-        "sonnet": "anthropic/claude-sonnet-4.5",
-        "opus": "anthropic/claude-opus-4.6",
+        "sonnet": "anthropic/claude-sonnet-4.6",
+        "opus": "anthropic/claude-opus-4.8",
         "haiku": "anthropic/claude-haiku-4.5"
       }
     }
