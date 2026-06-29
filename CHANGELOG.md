@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.2.2 — 2026-06-29
+
+### Improvements
+
+- Lower minimum Node.js requirement from >=22 to >=20 (8a4b2a1)
+
+**Full Changelog:** https://github.com/yagizdo/cc-provider-switcher/compare/v0.2.1...v0.2.2
+
 ## v0.2.1 — 2026-06-26
 
 ### Bug Fixes

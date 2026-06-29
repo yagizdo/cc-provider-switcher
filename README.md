@@ -2,7 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/cc-provider-switcher.svg)](https://www.npmjs.com/package/cc-provider-switcher)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
-[![Node.js](https://img.shields.io/badge/node-%3E%3D22-brightgreen)](https://nodejs.org)
+[![Node.js](https://img.shields.io/badge/node-%3E%3D20-brightgreen)](https://nodejs.org)
 
 Switch Claude Code between AI providers with one command.
 

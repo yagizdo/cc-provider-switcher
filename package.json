@@ -1,6 +1,6 @@
 {
   "name": "cc-provider-switcher",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Switch Claude Code between AI providers with one command",
   "type": "module",
   "bin": {
