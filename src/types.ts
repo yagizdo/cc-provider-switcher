@@ -12,7 +12,6 @@ export const ProviderSchema = z.object({
     haiku: z.string(),
   }),
   regions: z.record(z.string(), z.string()).optional(),
-  optional: z.boolean().optional(),
   supportedCapabilities: z.array(z.string()).optional(),
   thinkingNote: z.string().optional(),
 })

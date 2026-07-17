@@ -88,7 +88,7 @@ ccs seed
 | `ccs list` | List all available providers |
 | `ccs status` | Show current provider, model, and API key |
 | `ccs config` | Interactive API key setup |
-| `ccs reset` | Remove ccs-managed settings |
+| `ccs reset` | Remove ccs-managed settings and return to Claude Code's native default |
 | `ccs reset --project` | Reset project-level settings |
 | `ccs reset --all` | Reset both user and project settings |
 | `ccs doctor` | Diagnose environment issues |
@@ -111,13 +111,13 @@ ccs seed
 | Seed/Doubao | `seed` | `doubao` | on/off | global |
 | StepFun | `stepfun` | `sf` | effort | global |
 | OpenRouter | `openrouter` | `or` | passthrough | global |
-| Claude (Anthropic) | `claude` | `anthropic`, `sonnet` | native | global |
+
+Claude (Anthropic) isn't a switchable provider — it's Claude Code's own native default. Run `ccs reset` to return to it.
 
 **Thinking column:**
 - `effort` — reasoning_effort levels (low/medium/high)
 - `adaptive` — adaptive thinking only (`enabled` causes 400 on this provider)
 - `on/off` — thinking enabled/disabled, no effort control
-- `native` — Claude Code's built-in detection applies
 - `passthrough` — depends on the model routed through OpenRouter
 
 ### Model mapping
@@ -128,13 +128,12 @@ When Claude Code picks haiku/sonnet/opus, ccs maps them to the actual model IDs 
 |----------|-------|--------|------|
 | DeepSeek | `deepseek-v4-flash` | `deepseek-v4-flash` | `deepseek-v4-pro` |
 | MiniMax | `MiniMax-M3` | `MiniMax-M3` | `MiniMax-M3` |
-| Kimi | `kimi-k2.7-code-highspeed` | `kimi-k2.7-code-highspeed` | `kimi-k2.7-code` |
+| Kimi | `kimi-k3` | `kimi-k3` | `kimi-k3` |
 | Qwen | `qwen3.7-plus` | `qwen3.7-plus` | `qwen3.7-max` |
 | GLM | `glm-5.2` | `glm-5.2` | `glm-5.2` |
 | Seed/Doubao | `ark-code-latest` | `ark-code-latest` | `ark-code-latest` |
 | StepFun | `step-3.7-flash` | `step-3.7-flash` | `step-3.7-flash` |
-| OpenRouter | `anthropic/claude-haiku-4.5` | `anthropic/claude-sonnet-4.6` | `anthropic/claude-opus-4.8` |
-| Claude (Anthropic) | `claude-haiku-4-5-20251001` | `claude-sonnet-4-6` | `claude-opus-4-8` |
+| OpenRouter | `anthropic/claude-haiku-4.5` | `anthropic/claude-sonnet-5` | `anthropic/claude-opus-4.8` |
 
 Override any ID via `providerOverrides` in `~/.ccs/config.json` — see [Override model IDs](#override-model-ids).
 
@@ -250,7 +249,6 @@ Add an entry to `src/providers/providers.json` and submit a PR:
 - `supportedCapabilities` — Claude Code capability strings to declare (`effort`, `thinking`, `adaptive_thinking`, `max_effort`). Sets `ANTHROPIC_DEFAULT_*_MODEL_SUPPORTED_CAPABILITIES` env vars so Claude Code enables effort/thinking controls.
 - `thinkingNote` — shown as an info line after switching, to warn about provider-specific limits.
 - `regions` — map of region name → base URL.
-- `optional` — if `true`, missing API key is not a fatal error (used for Claude native).
 
 ---
 

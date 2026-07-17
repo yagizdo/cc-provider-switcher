@@ -4,17 +4,25 @@ import { loadUserConfig } from '../config/user-config.js'
 import { writeUserSettings, writeProjectSettings } from '../config/claude-settings.js'
 import * as display from '../utils/display.js'
 
+const CLAUDE_NATIVE_NAMES = new Set(['claude', 'anthropic', 'sonnet'])
+
 async function doSwitch(
   providerName: string,
   region: string | undefined,
   scope: 'user' | 'project'
 ): Promise<void> {
+  if (CLAUDE_NATIVE_NAMES.has(providerName.toLowerCase())) {
+    display.info('Claude is Claude Code\'s native default — there is nothing to switch to.')
+    display.info('Run "ccs reset" to clear provider overrides and return to it.')
+    return
+  }
+
   const userConfig = await loadUserConfig()
   const provider = resolveProvider(providerName, userConfig)
   const baseUrl = resolveBaseUrl(provider, region)
   const apiKey = getApiKey(provider, userConfig)
 
-  if (!apiKey && !provider.optional) {
+  if (!apiKey) {
     display.error(
       `No API key for ${provider.name}. Set ${provider.keyEnvVar} or run "ccs config".`
     )

@@ -24,19 +24,6 @@
       "supportedCapabilities": ["adaptive_thinking"],
       "thinkingNote": "Only adaptive/disabled thinking (enabled returns 400)"
     },
-    "claude": {
-      "name": "Claude (Anthropic)",
-      "baseUrl": "https://api.anthropic.com/",
-      "defaultModel": "claude-sonnet-5",
-      "aliases": ["anthropic", "sonnet"],
-      "keyEnvVar": "CLAUDE_API_KEY",
-      "optional": true,
-      "models": {
-        "sonnet": "claude-sonnet-5",
-        "opus": "claude-fable-5",
-        "haiku": "claude-haiku-4-5-20251001"
-      }
-    },
     "kimi": {
       "name": "Kimi",
       "baseUrl": "https://api.moonshot.ai/anthropic",
@@ -118,7 +105,7 @@
       "keyEnvVar": "OPENROUTER_API_KEY",
       "models": {
         "sonnet": "anthropic/claude-sonnet-5",
-        "opus": "anthropic/claude-fable-5",
+        "opus": "anthropic/claude-opus-4.8",
         "haiku": "anthropic/claude-haiku-4.5"
       }
     }

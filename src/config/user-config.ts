@@ -38,7 +38,6 @@ export async function initConfig(configPath = CCS_CONFIG_FILE): Promise<void> {
   console.log('Configure API keys for each provider (leave blank to skip):\n')
 
   for (const [key, provider] of Object.entries(registry.providers)) {
-    if (provider.optional) continue
     const existing = current.keys[key] ? ` [${maskKey(current.keys[key])}]` : ''
     const answer = await question(`${provider.name}${existing}: `)
     if (answer.trim()) current.keys[key] = answer.trim()

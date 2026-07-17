@@ -3,7 +3,7 @@ import { loadRegistry } from '../providers/registry.js'
 import chalk from 'chalk'
 
 function thinkingIndicator(key: string, caps: string[] | undefined): string {
-  if (!caps) return key === 'claude' ? 'native' : key === 'openrouter' ? 'passthrough' : ''
+  if (!caps) return key === 'openrouter' ? 'passthrough' : ''
   if (caps.includes('adaptive_thinking')) return 'adaptive'
   if (caps.includes('thinking') && caps.includes('effort')) return 'effort'
   if (caps.includes('thinking')) return 'on/off'

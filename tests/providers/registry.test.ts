@@ -9,7 +9,7 @@ import {
 describe('loadRegistry', () => {
   it('loads and validates all built-in providers', () => {
     const registry = loadRegistry()
-    expect(Object.keys(registry.providers).length).toBe(9)
+    expect(Object.keys(registry.providers).length).toBe(8)
   })
 
   it('all providers pass Zod validation', () => {
@@ -27,11 +27,6 @@ describe('loadRegistry', () => {
     const registry = loadRegistry()
     const minimax = registry.providers['minimax']
     expect(minimax.supportedCapabilities).toContain('adaptive_thinking')
-  })
-
-  it('claude has no supportedCapabilities (native)', () => {
-    const registry = loadRegistry()
-    expect(registry.providers['claude'].supportedCapabilities).toBeUndefined()
   })
 
   it('deepseek uses updated model names', () => {
