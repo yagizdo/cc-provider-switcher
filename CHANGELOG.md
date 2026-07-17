@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.3.0 — 2026-07-17
+
+### Bug Fixes
+
+- Fix OpenRouter's opus model ID, which was mistakenly pointing to `claude-fable-5` instead of `claude-opus-4.8` (dd80b39)
+
+### Improvements
+
+- Drop `claude` as a switchable provider — it's Claude Code's native default and `ccs reset` already restores it; hardcoding its model IDs was unnecessary maintenance risk (dd80b39)
+- Update model IDs to latest 2026 versions: Claude to Sonnet 5 / Fable 5, Kimi to K3 (K2 deprecated May 2026), OpenRouter to matching `claude-sonnet-5` / `claude-fable-5` (a03166e)
+
+**Full Changelog:** https://github.com/yagizdo/cc-provider-switcher/compare/v0.2.2...v0.3.0
+
 ## v0.2.2 — 2026-06-29
 
 ### Improvements
