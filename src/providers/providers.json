@@ -27,27 +27,27 @@
     "claude": {
       "name": "Claude (Anthropic)",
       "baseUrl": "https://api.anthropic.com/",
-      "defaultModel": "claude-sonnet-4-6",
+      "defaultModel": "claude-sonnet-5",
       "aliases": ["anthropic", "sonnet"],
       "keyEnvVar": "CLAUDE_API_KEY",
       "optional": true,
       "models": {
-        "sonnet": "claude-sonnet-4-6",
-        "opus": "claude-opus-4-8",
+        "sonnet": "claude-sonnet-5",
+        "opus": "claude-fable-5",
         "haiku": "claude-haiku-4-5-20251001"
       }
     },
     "kimi": {
       "name": "Kimi",
       "baseUrl": "https://api.moonshot.ai/anthropic",
-      "defaultModel": "kimi-k2.7-code",
+      "defaultModel": "kimi-k3",
       "aliases": ["kimi2"],
       "keyEnvVar": "KIMI_API_KEY",
       "regions": {
         "global": "https://api.moonshot.ai/anthropic",
         "china": "https://api.moonshot.cn/anthropic"
       },
-      "models": { "sonnet": "kimi-k2.7-code-highspeed", "opus": "kimi-k2.7-code", "haiku": "kimi-k2.7-code-highspeed" },
+      "models": { "sonnet": "kimi-k3", "opus": "kimi-k3", "haiku": "kimi-k3" },
       "supportedCapabilities": ["effort", "thinking"]
     },
     "qwen": {
@@ -113,12 +113,12 @@
     "openrouter": {
       "name": "OpenRouter",
       "baseUrl": "https://openrouter.ai/api",
-      "defaultModel": "anthropic/claude-sonnet-4.6",
+      "defaultModel": "anthropic/claude-sonnet-5",
       "aliases": ["or"],
       "keyEnvVar": "OPENROUTER_API_KEY",
       "models": {
-        "sonnet": "anthropic/claude-sonnet-4.6",
-        "opus": "anthropic/claude-opus-4.8",
+        "sonnet": "anthropic/claude-sonnet-5",
+        "opus": "anthropic/claude-fable-5",
         "haiku": "anthropic/claude-haiku-4.5"
       }
     }
