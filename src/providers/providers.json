@@ -108,6 +108,20 @@
         "opus": "anthropic/claude-opus-4.8",
         "haiku": "anthropic/claude-haiku-4.5"
       }
+    },
+    "lmstudio": {
+      "name": "LM Studio",
+      "baseUrl": "http://127.0.0.1:1234",
+      "defaultModel": "qwen/qwen3.8-27b",
+      "aliases": ["lms"],
+      "keyEnvVar": "LMSTUDIO_API_KEY",
+      "keyOptional": true,
+      "models": {
+        "sonnet": "qwen/qwen3.8-27b",
+        "opus": "qwen/qwen3.8-27b",
+        "haiku": "qwen/qwen3.8-27b"
+      },
+      "thinkingNote": "Local model. Use --model <id> to pick another one"
     }
   }
 }

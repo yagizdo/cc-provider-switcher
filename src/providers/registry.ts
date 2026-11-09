@@ -53,3 +53,7 @@ export function getApiKey(provider: ResolvedProvider, userConfig?: UserConfig): 
   if (envVal) return envVal
   return userConfig?.keys?.[provider.registryKey] ?? null
 }
+
+export function withModel<T extends Provider>(provider: T, model: string): T {
+  return { ...provider, defaultModel: model, models: { sonnet: model, opus: model, haiku: model } }
+}

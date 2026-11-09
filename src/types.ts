@@ -6,6 +6,7 @@ export const ProviderSchema = z.object({
   defaultModel: z.string(),
   aliases: z.array(z.string()),
   keyEnvVar: z.string(),
+  keyOptional: z.boolean().optional(),
   models: z.object({
     sonnet: z.string(),
     opus: z.string(),

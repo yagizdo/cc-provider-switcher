@@ -85,6 +85,7 @@ ccs seed
 |---------|-------------|
 | `ccs <provider> [region]` | Switch Claude Code to a provider (user-level) |
 | `ccs project <provider> [region]` | Switch for current project only |
+| `ccs <provider> --model <id>` | Use one model ID for sonnet/opus/haiku (also works with `project`) |
 | `ccs list` | List all available providers |
 | `ccs status` | Show current provider, model, and API key |
 | `ccs config` | Interactive API key setup |
@@ -134,6 +135,7 @@ When Claude Code picks haiku/sonnet/opus, ccs maps them to the actual model IDs 
 | Seed/Doubao | `ark-code-latest` | `ark-code-latest` | `ark-code-latest` |
 | StepFun | `step-3.7-flash` | `step-3.7-flash` | `step-3.7-flash` |
 | OpenRouter | `anthropic/claude-haiku-4.5` | `anthropic/claude-sonnet-5` | `anthropic/claude-opus-4.8` |
+| LM Studio | `qwen/qwen3.8-27b` | `qwen/qwen3.8-27b` | `qwen/qwen3.8-27b` |
 
 Override any ID via `providerOverrides` in `~/.ccs/config.json` — see [Override model IDs](#override-model-ids).
 
@@ -178,6 +180,29 @@ Update model IDs without waiting for a release:
   }
 }
 ```
+
+### LM Studio
+
+`ccs lmstudio` (alias `lms`) points Claude Code at `http://127.0.0.1:1234`. Start the LM Studio server first. No API key needed. To use another model, pass it with `--model`:
+
+```bash
+ccs lmstudio --model my/model-id
+```
+
+To make it permanent, override all four model fields (overrides replace `models` as a whole):
+
+```json
+{
+  "providerOverrides": {
+    "lmstudio": {
+      "defaultModel": "my/model-id",
+      "models": { "sonnet": "my/model-id", "opus": "my/model-id", "haiku": "my/model-id" }
+    }
+  }
+}
+```
+
+Use the "API Model Identifier" shown in LM Studio. Set the context length to 32k or more.
 
 ### What ccs writes
 

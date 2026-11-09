@@ -4,12 +4,13 @@ import {
   resolveProvider,
   resolveBaseUrl,
   getApiKey,
+  withModel,
 } from '../../src/providers/registry.js'
 
 describe('loadRegistry', () => {
   it('loads and validates all built-in providers', () => {
     const registry = loadRegistry()
-    expect(Object.keys(registry.providers).length).toBe(8)
+    expect(Object.keys(registry.providers).length).toBe(9)
   })
 
   it('all providers pass Zod validation', () => {
@@ -123,5 +124,14 @@ describe('getApiKey', () => {
     delete process.env['DEEPSEEK_API_KEY']
     const p = resolveProvider('deepseek')
     expect(getApiKey(p)).toBeNull()
+  })
+})
+
+describe('withModel', () => {
+  it('sets default and all tier models, keeps other fields', () => {
+    const p = withModel(resolveProvider('lmstudio'), 'my/model')
+    expect(p.defaultModel).toBe('my/model')
+    expect(p.models).toEqual({ sonnet: 'my/model', opus: 'my/model', haiku: 'my/model' })
+    expect(p.baseUrl).toBe('http://127.0.0.1:1234')
   })
 })
