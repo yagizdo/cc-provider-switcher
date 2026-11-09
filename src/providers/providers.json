@@ -108,6 +108,18 @@
         "opus": "anthropic/claude-opus-4.8",
         "haiku": "anthropic/claude-haiku-4.5"
       }
+    },
+    "llm_buzz": {
+      "name": "llm.buzz",
+      "baseUrl": "https://api.llm.buzz/api/v1",
+      "defaultModel": "anthropic/claude-sonnet-5",
+      "aliases": ["buzz"],
+      "keyEnvVar": "LLM_BUZZ_API_KEY",
+      "models": {
+        "sonnet": "anthropic/claude-sonnet-5",
+        "opus": "anthropic/claude-opus-5.5",
+        "haiku": "anthropic/claude-haiku-5.5"
+      }
     }
   }
 }
