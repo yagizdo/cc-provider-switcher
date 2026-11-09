@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.4.0 — 2026-11-09
+
+### Features
+
+- Add LM Studio provider (`ccs lmstudio`, alias `lms`) for local models at `http://127.0.0.1:1234`, no API key needed (2e24d38)
+- Add `--model <id>` to `ccs <provider>` and `ccs project <provider>` to use one model ID for sonnet, opus and haiku (2e24d38)
+
+### Improvements
+
+- Update model IDs to November 2026 versions: DeepSeek `deepseek-flash` (V4-Pro requests now route to V4.1-Flash), MiniMax `MiniMax-M3.1-Flash`, Kimi `kimi-k3.1-pro` with `kimi-k3.1-pro-highspeed` for haiku, GLM `glm-5.3` with `glm-5.3-flash` for haiku, OpenRouter Claude 5.5 (8c9049e)
+- Qwen opus now uses `qwen3.7-plus`, the only model Alibaba documents for the Coding Plan endpoint (8c9049e)
+- MiniMax capabilities are now `effort,max_effort,thinking`: M3.1-Flash always thinks and returns 400 when thinking is disabled (8c9049e)
+- Change StepFun base URL to `https://api.stepfun.ai`, the pay-as-you-go endpoint in StepFun's docs (8c9049e)
+
+**Full Changelog:** https://github.com/yagizdo/cc-provider-switcher/compare/v0.3.0...v0.4.0
+
 ## v0.3.0 — 2026-07-17
 
 ### Bug Fixes
