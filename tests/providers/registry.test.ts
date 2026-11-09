@@ -9,7 +9,7 @@ import {
 describe('loadRegistry', () => {
   it('loads and validates all built-in providers', () => {
     const registry = loadRegistry()
-    expect(Object.keys(registry.providers).length).toBe(8)
+    expect(Object.keys(registry.providers).length).toBe(9)
   })
 
   it('all providers pass Zod validation', () => {
