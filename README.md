@@ -49,7 +49,7 @@ npm install -g cc-provider-switcher@latest
 
 ccs sets `ANTHROPIC_DEFAULT_*_MODEL_SUPPORTED_CAPABILITIES` so Claude Code knows which thinking features a provider supports. No extra steps needed after switching.
 
-**Providers with effort control** (DeepSeek, GLM, Qwen, Kimi, StepFun):
+**Providers with effort control** (DeepSeek, MiniMax, GLM, Qwen, Kimi, StepFun):
 
 ```sh
 ccs deepseek
@@ -59,15 +59,7 @@ ccs deepseek
 
 ```sh
 ccs glm
-# Same, plus max_effort tier available
-```
-
-**MiniMax — adaptive thinking:**
-
-```sh
-ccs minimax
-# MiniMax decides when to think based on task complexity — nothing to configure
-# Note shown: "Only adaptive/disabled thinking (enabled returns 400)"
+# Same, plus max_effort tier available (also on MiniMax)
 ```
 
 **Seed/Doubao — thinking on/off only:**
@@ -105,19 +97,19 @@ ccs seed
 | Name | Key | Aliases | Thinking | Regions |
 |------|-----|---------|----------|---------|
 | DeepSeek | `deepseek` | `ds` | effort | global |
-| MiniMax | `minimax` | `mm` | adaptive | global, china |
+| MiniMax | `minimax` | `mm` | effort | global, china |
 | Kimi | `kimi` | `kimi2` | effort | global, china |
 | Qwen | `qwen` | — | effort | global, china |
 | GLM | `glm` | `glm5` | effort | global, china |
 | Seed/Doubao | `seed` | `doubao` | on/off | global |
 | StepFun | `stepfun` | `sf` | effort | global |
 | OpenRouter | `openrouter` | `or` | passthrough | global |
+| LM Studio | `lmstudio` | `lms` | — | local |
 
 Claude (Anthropic) isn't a switchable provider — it's Claude Code's own native default. Run `ccs reset` to return to it.
 
 **Thinking column:**
 - `effort` — reasoning_effort levels (low/medium/high)
-- `adaptive` — adaptive thinking only (`enabled` causes 400 on this provider)
 - `on/off` — thinking enabled/disabled, no effort control
 - `passthrough` — depends on the model routed through OpenRouter
 
