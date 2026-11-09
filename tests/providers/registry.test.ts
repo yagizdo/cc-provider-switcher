@@ -24,22 +24,23 @@ describe('loadRegistry', () => {
     expect(deepseek.supportedCapabilities).toContain('thinking')
   })
 
-  it('minimax has adaptive_thinking capability', () => {
+  it('minimax M3.1-Flash always thinks, so no adaptive_thinking', () => {
     const registry = loadRegistry()
     const minimax = registry.providers['minimax']
-    expect(minimax.supportedCapabilities).toContain('adaptive_thinking')
+    expect(minimax.supportedCapabilities).toContain('effort')
+    expect(minimax.supportedCapabilities).not.toContain('adaptive_thinking')
   })
 
   it('deepseek uses updated model names', () => {
     const registry = loadRegistry()
     const deepseek = registry.providers['deepseek']
-    expect(deepseek.models.sonnet).toBe('deepseek-v4-flash')
-    expect(deepseek.models.opus).toBe('deepseek-v4-pro')
+    expect(deepseek.models.sonnet).toBe('deepseek-flash')
+    expect(deepseek.models.opus).toBe('deepseek-flash')
   })
 
-  it('minimax uses M3 model', () => {
+  it('minimax uses M3.1-Flash model', () => {
     const registry = loadRegistry()
-    expect(registry.providers['minimax'].models.sonnet).toBe('MiniMax-M3')
+    expect(registry.providers['minimax'].models.sonnet).toBe('MiniMax-M3.1-Flash')
   })
 })
 

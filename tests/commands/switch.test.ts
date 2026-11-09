@@ -35,7 +35,7 @@ describe('switch to deepseek', () => {
     )
     const settings = await readUserSettings(userSettingsPath)
     expect(settings.env?.ANTHROPIC_BASE_URL).toBe('https://api.deepseek.com/anthropic')
-    expect(settings.env?.ANTHROPIC_MODEL).toBe('deepseek-v4-flash')
+    expect(settings.env?.ANTHROPIC_MODEL).toBe('deepseek-flash')
     expect(settings.env?.ANTHROPIC_AUTH_TOKEN).toBe('sk-test')
     expect(settings.ccsManaged).toBe(true)
   })

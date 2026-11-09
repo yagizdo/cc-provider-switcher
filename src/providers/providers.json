@@ -3,44 +3,44 @@
     "deepseek": {
       "name": "DeepSeek",
       "baseUrl": "https://api.deepseek.com/anthropic",
-      "defaultModel": "deepseek-v4-flash",
+      "defaultModel": "deepseek-flash",
       "aliases": ["ds"],
       "keyEnvVar": "DEEPSEEK_API_KEY",
-      "models": { "sonnet": "deepseek-v4-flash", "opus": "deepseek-v4-pro", "haiku": "deepseek-v4-flash" },
+      "models": { "sonnet": "deepseek-flash", "opus": "deepseek-flash", "haiku": "deepseek-flash" },
       "supportedCapabilities": ["effort", "thinking"],
       "thinkingNote": "budget_tokens ignored, uses reasoning_effort internally"
     },
     "minimax": {
       "name": "MiniMax",
       "baseUrl": "https://api.minimax.io/anthropic",
-      "defaultModel": "MiniMax-M3",
+      "defaultModel": "MiniMax-M3.1-Flash",
       "aliases": ["mm"],
       "keyEnvVar": "MINIMAX_API_KEY",
       "regions": {
         "global": "https://api.minimax.io/anthropic",
         "china": "https://api.minimaxi.com/anthropic"
       },
-      "models": { "sonnet": "MiniMax-M3", "opus": "MiniMax-M3", "haiku": "MiniMax-M3" },
-      "supportedCapabilities": ["adaptive_thinking"],
-      "thinkingNote": "Only adaptive/disabled thinking (enabled returns 400)"
+      "models": { "sonnet": "MiniMax-M3.1-Flash", "opus": "MiniMax-M3.1-Flash", "haiku": "MiniMax-M3.1-Flash" },
+      "supportedCapabilities": ["effort", "max_effort", "thinking"],
+      "thinkingNote": "Always thinks (disabled returns 400). Effort: low/medium/high/xhigh/max"
     },
     "kimi": {
       "name": "Kimi",
       "baseUrl": "https://api.moonshot.ai/anthropic",
-      "defaultModel": "kimi-k3",
+      "defaultModel": "kimi-k3.1-pro",
       "aliases": ["kimi2"],
       "keyEnvVar": "KIMI_API_KEY",
       "regions": {
         "global": "https://api.moonshot.ai/anthropic",
         "china": "https://api.moonshot.cn/anthropic"
       },
-      "models": { "sonnet": "kimi-k3", "opus": "kimi-k3", "haiku": "kimi-k3" },
+      "models": { "sonnet": "kimi-k3.1-pro", "opus": "kimi-k3.1-pro", "haiku": "kimi-k3.1-pro-highspeed" },
       "supportedCapabilities": ["effort", "thinking"]
     },
     "qwen": {
       "name": "Qwen",
       "baseUrl": "https://coding-intl.dashscope.aliyuncs.com/apps/anthropic",
-      "defaultModel": "qwen3.7-max",
+      "defaultModel": "qwen3.7-plus",
       "aliases": [],
       "keyEnvVar": "QWEN_API_KEY",
       "regions": {
@@ -49,7 +49,7 @@
       },
       "models": {
         "sonnet": "qwen3.7-plus",
-        "opus": "qwen3.7-max",
+        "opus": "qwen3.7-plus",
         "haiku": "qwen3.7-plus"
       },
       "supportedCapabilities": ["effort", "thinking"],
@@ -58,16 +58,16 @@
     "glm": {
       "name": "GLM",
       "baseUrl": "https://api.z.ai/api/anthropic",
-      "defaultModel": "glm-5.2",
+      "defaultModel": "glm-5.3",
       "aliases": ["glm5"],
       "keyEnvVar": "GLM_API_KEY",
       "regions": {
         "global": "https://api.z.ai/api/anthropic",
         "china": "https://open.bigmodel.cn/api/anthropic"
       },
-      "models": { "sonnet": "glm-5.2", "opus": "glm-5.2", "haiku": "glm-5.2" },
+      "models": { "sonnet": "glm-5.3", "opus": "glm-5.3", "haiku": "glm-5.3-flash" },
       "supportedCapabilities": ["effort", "max_effort", "thinking"],
-      "thinkingNote": "Two-tier effort: high and max"
+      "thinkingNote": "Always reasons (disabled fails). Effort: low/high/max"
     },
     "seed": {
       "name": "Seed/Doubao",
@@ -85,7 +85,7 @@
     },
     "stepfun": {
       "name": "StepFun",
-      "baseUrl": "https://api.stepfun.ai/v1/anthropic",
+      "baseUrl": "https://api.stepfun.ai",
       "defaultModel": "step-3.7-flash",
       "aliases": ["sf"],
       "keyEnvVar": "STEPFUN_API_KEY",
@@ -100,13 +100,13 @@
     "openrouter": {
       "name": "OpenRouter",
       "baseUrl": "https://openrouter.ai/api",
-      "defaultModel": "anthropic/claude-sonnet-5",
+      "defaultModel": "anthropic/claude-sonnet-5.5",
       "aliases": ["or"],
       "keyEnvVar": "OPENROUTER_API_KEY",
       "models": {
-        "sonnet": "anthropic/claude-sonnet-5",
-        "opus": "anthropic/claude-opus-4.8",
-        "haiku": "anthropic/claude-haiku-4.5"
+        "sonnet": "anthropic/claude-sonnet-5.5",
+        "opus": "anthropic/claude-opus-5.5",
+        "haiku": "anthropic/claude-haiku-5.5"
       }
     },
     "lmstudio": {

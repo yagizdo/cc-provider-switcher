@@ -127,14 +127,14 @@ When Claude Code picks haiku/sonnet/opus, ccs maps them to the actual model IDs 
 
 | Provider | Haiku | Sonnet | Opus |
 |----------|-------|--------|------|
-| DeepSeek | `deepseek-v4-flash` | `deepseek-v4-flash` | `deepseek-v4-pro` |
-| MiniMax | `MiniMax-M3` | `MiniMax-M3` | `MiniMax-M3` |
-| Kimi | `kimi-k3` | `kimi-k3` | `kimi-k3` |
-| Qwen | `qwen3.7-plus` | `qwen3.7-plus` | `qwen3.7-max` |
-| GLM | `glm-5.2` | `glm-5.2` | `glm-5.2` |
+| DeepSeek | `deepseek-flash` | `deepseek-flash` | `deepseek-flash` |
+| MiniMax | `MiniMax-M3.1-Flash` | `MiniMax-M3.1-Flash` | `MiniMax-M3.1-Flash` |
+| Kimi | `kimi-k3.1-pro-highspeed` | `kimi-k3.1-pro` | `kimi-k3.1-pro` |
+| Qwen | `qwen3.7-plus` | `qwen3.7-plus` | `qwen3.7-plus` |
+| GLM | `glm-5.3-flash` | `glm-5.3` | `glm-5.3` |
 | Seed/Doubao | `ark-code-latest` | `ark-code-latest` | `ark-code-latest` |
 | StepFun | `step-3.7-flash` | `step-3.7-flash` | `step-3.7-flash` |
-| OpenRouter | `anthropic/claude-haiku-4.5` | `anthropic/claude-sonnet-5` | `anthropic/claude-opus-4.8` |
+| OpenRouter | `anthropic/claude-haiku-5.5` | `anthropic/claude-sonnet-5.5` | `anthropic/claude-opus-5.5` |
 | LM Studio | `qwen/qwen3.8-27b` | `qwen/qwen3.8-27b` | `qwen/qwen3.8-27b` |
 
 Override any ID via `providerOverrides` in `~/.ccs/config.json` — see [Override model IDs](#override-model-ids).
@@ -216,11 +216,11 @@ ccs modifies only the `env` block in Claude Code settings. It never touches othe
   "env": {
     "ANTHROPIC_BASE_URL": "https://api.deepseek.com/anthropic",
     "ANTHROPIC_AUTH_TOKEN": "sk-...",
-    "ANTHROPIC_MODEL": "deepseek-v4-flash",
-    "ANTHROPIC_DEFAULT_SONNET_MODEL": "deepseek-v4-flash",
-    "ANTHROPIC_DEFAULT_OPUS_MODEL": "deepseek-v4-pro",
-    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "deepseek-v4-flash",
-    "CLAUDE_CODE_SUBAGENT_MODEL": "deepseek-v4-flash",
+    "ANTHROPIC_MODEL": "deepseek-flash",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "deepseek-flash",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "deepseek-flash",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "deepseek-flash",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "deepseek-flash",
     "ANTHROPIC_DEFAULT_SONNET_MODEL_SUPPORTED_CAPABILITIES": "effort,thinking",
     "ANTHROPIC_DEFAULT_OPUS_MODEL_SUPPORTED_CAPABILITIES": "effort,thinking",
     "ANTHROPIC_DEFAULT_HAIKU_MODEL_SUPPORTED_CAPABILITIES": "effort,thinking"
