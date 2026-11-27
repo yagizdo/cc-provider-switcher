@@ -2,7 +2,13 @@ import { describe, it, expect, afterEach } from 'vitest'
 import os from 'os'
 import path from 'path'
 import fs from 'fs/promises'
-import { loadUserConfig, saveUserConfig, getApiKeyForProvider } from '../../src/config/user-config.js'
+import {
+  loadUserConfig,
+  saveUserConfig,
+  getApiKeyForProvider,
+  addCustomProvider,
+  removeCustomProvider,
+} from '../../src/config/user-config.js'
 
 const tmpDir = path.join(os.tmpdir(), `ccs-test-${process.pid}`)
 const CONFIG_PATH = path.join(tmpDir, 'config.json')
@@ -51,6 +57,62 @@ describe('saveUserConfig', () => {
     await saveUserConfig(config, CONFIG_PATH)
     const raw = await fs.readFile(CONFIG_PATH, 'utf-8')
     expect(JSON.parse(raw).keys.deepseek).toBe('sk-abc')
+  })
+})
+
+describe('custom providers', () => {
+  const existing = {
+    keys: { deepseek: 'sk-keep' },
+    providerOverrides: { deepseek: { defaultModel: 'deepseek-v4' } },
+    customProviders: { other: { baseUrl: 'https://other.example.com', models: { sonnet: 'o-1' } } },
+    unknownField: 1,
+  }
+
+  it('add and remove keep stored keys and every other field', async () => {
+    await fs.mkdir(tmpDir, { recursive: true })
+    await fs.writeFile(CONFIG_PATH, JSON.stringify(existing))
+
+    await addCustomProvider('mine', 'https://mine.example.com', 'm-1', CONFIG_PATH)
+    expect(JSON.parse(await fs.readFile(CONFIG_PATH, 'utf-8'))).toEqual({
+      ...existing,
+      customProviders: {
+        ...existing.customProviders,
+        mine: { baseUrl: 'https://mine.example.com', models: { sonnet: 'm-1', opus: 'm-1', haiku: 'm-1' } },
+      },
+    })
+
+    await removeCustomProvider('mine', CONFIG_PATH)
+    expect(JSON.parse(await fs.readFile(CONFIG_PATH, 'utf-8'))).toEqual(existing)
+  })
+
+  it('refuses to write over a config that is not valid JSON', async () => {
+    const broken = '{"keys": {"deepseek": "sk-keep",}'
+    await fs.mkdir(tmpDir, { recursive: true })
+    await fs.writeFile(CONFIG_PATH, broken)
+    await expect(addCustomProvider('mine', 'https://mine.example.com', 'm-1', CONFIG_PATH)).rejects.toThrow(
+      'not valid JSON'
+    )
+    expect(await fs.readFile(CONFIG_PATH, 'utf-8')).toBe(broken)
+  })
+
+  it.each([
+    ['glm', [], 'built-in provider "glm"'],
+    ['mine', ['ds'], 'built-in provider "deepseek"'],
+    ['list', [], 'is a ccs command'],
+    ['mine', ['claude'], "Claude Code's native default"],
+    ['mine', ['other'], 'already used by custom provider "other"'],
+  ])('rejects custom provider %s with aliases %j', async (name, aliases, message) => {
+    await fs.mkdir(tmpDir, { recursive: true })
+    await fs.writeFile(
+      CONFIG_PATH,
+      JSON.stringify({
+        customProviders: {
+          other: { baseUrl: 'https://other.example.com', models: { sonnet: 'o-1' } },
+          [name]: { baseUrl: 'https://mine.example.com', aliases, models: { sonnet: 'm-1' } },
+        },
+      })
+    )
+    await expect(loadUserConfig(CONFIG_PATH)).rejects.toThrow(message)
   })
 })
 

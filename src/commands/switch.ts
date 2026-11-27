@@ -1,10 +1,8 @@
 import { type Command } from 'commander'
-import { resolveProvider, resolveBaseUrl, getApiKey, withModel } from '../providers/registry.js'
+import { resolveProvider, resolveBaseUrl, getApiKey, withModel, CLAUDE_NATIVE_NAMES } from '../providers/registry.js'
 import { loadUserConfig } from '../config/user-config.js'
 import { writeUserSettings, writeProjectSettings, type ENV_KEYS } from '../config/claude-settings.js'
 import * as display from '../utils/display.js'
-
-export const CLAUDE_NATIVE_NAMES = new Set(['claude', 'anthropic', 'sonnet'])
 
 // Every key is required: `ccs run` sends the block as is, and a missing key lets a lower settings layer win.
 export type FullEnvBlock = Record<(typeof ENV_KEYS)[number], string>

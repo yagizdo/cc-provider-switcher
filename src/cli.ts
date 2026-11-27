@@ -9,6 +9,8 @@ import { registerDoctorCommand } from './commands/doctor.js'
 import { registerAccountCommand } from './commands/account.js'
 import { registerRunCommand, splitClaudeArgs } from './commands/run.js'
 import { registerTestCommand } from './commands/test.js'
+import { registerProviderCommand } from './commands/provider.js'
+import * as display from './utils/display.js'
 
 const require = createRequire(import.meta.url)
 const { version } = require('../package.json')
@@ -27,6 +29,11 @@ registerAccountCommand(program)
 const { argv, claudeArgs } = splitClaudeArgs(process.argv)
 registerRunCommand(program, claudeArgs)
 registerTestCommand(program)
+registerProviderCommand(program)
 registerSwitchCommand(program)
 
-program.parse(argv)
+// One line for an expected failure (unknown provider, bad config) instead of a stack trace.
+program.parseAsync(argv).catch((err: unknown) => {
+  display.error(err instanceof Error ? err.message : String(err))
+  process.exit(1)
+})
