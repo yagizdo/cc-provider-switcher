@@ -22,8 +22,8 @@ export function registerDoctorCommand(program: Command): void {
       const [major] = nodeVersion.split('.').map(Number)
       checks.push({
         label: `Node.js version (${nodeVersion})`,
-        pass: major >= 22,
-        detail: major < 22 ? 'ccs requires Node.js >=22' : undefined,
+        pass: major >= 20,
+        detail: major < 20 ? 'ccs requires Node.js >=20' : undefined,
       })
 
       // ~/.claude/ exists
