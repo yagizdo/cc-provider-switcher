@@ -77,7 +77,8 @@ ccs seed
 |---------|-------------|
 | `ccs <provider> [region]` | Switch Claude Code to a provider (user-level) |
 | `ccs project <provider> [region]` | Switch for current project only |
-| `ccs <provider> --model <id>` | Use one model ID for sonnet/opus/haiku (also works with `project`) |
+| `ccs run <provider> [region]` | Start Claude Code with a provider in this terminal only, without changing any settings file. Put claude's own flags after `--`: `ccs run glm -- --resume` |
+| `ccs <provider> --model <id>` | Use one model ID for sonnet/opus/haiku (also works with `project` and `run`) |
 | `ccs list` | List all available providers |
 | `ccs status` | Show current provider, model, and API key |
 | `ccs config` | Interactive API key setup |
@@ -89,6 +90,8 @@ ccs seed
 | `ccs account switch <name>` | Restore saved credentials |
 | `ccs account list` | List saved credential profiles |
 | `ccs account delete <name>` | Delete a saved profile |
+
+A `ccs run` session uses its provider even when `ccs <provider>` or `ccs project` set a different one; other sessions keep theirs. `ccs status` does not show a `ccs run` session.
 
 ---
 

@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import os from 'os'
 import path from 'path'
 import fs from 'fs/promises'
+import { execFileSync } from 'child_process'
 import { writeUserSettings, writeProjectSettings, clearManagedSettings, readUserSettings } from '../../src/config/claude-settings.js'
 import { resolveProvider, resolveBaseUrl, getApiKey } from '../../src/providers/registry.js'
 
@@ -113,6 +114,19 @@ describe('capability env vars for deepseek', () => {
     const settings = await readUserSettings(userSettingsPath)
     expect(settings.env?.ANTHROPIC_DEFAULT_SONNET_MODEL_SUPPORTED_CAPABILITIES).toBeUndefined()
     expect(settings.env?.ANTHROPIC_DEFAULT_OPUS_MODEL_SUPPORTED_CAPABILITIES).toBeUndefined()
+  })
+})
+
+describe('ccs project <provider> -m', () => {
+  // The root command's own -m used to take the option, so the project file got the default model.
+  it('writes the given model to the project file', async () => {
+    execFileSync(path.resolve('node_modules/.bin/tsx'), [path.resolve('src/cli.ts'), 'project', 'lmstudio', '-m', 'model-x'], {
+      cwd: tmpDir,
+      env: { ...process.env, HOME: tmpDir },
+      stdio: 'pipe',
+    })
+    const raw = JSON.parse(await fs.readFile(path.join(tmpDir, '.claude', 'settings.local.json'), 'utf-8'))
+    expect(raw.env.ANTHROPIC_MODEL).toBe('model-x')
   })
 })
 
