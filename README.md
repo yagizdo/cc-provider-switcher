@@ -235,7 +235,20 @@ ccs account list            # list all saved accounts
 ccs account delete personal # delete "personal"
 ```
 
-Credentials are stored in `~/.ccs/accounts/` with `0600` permissions.
+ccs reads and writes the login where Claude Code keeps it:
+
+- macOS: the `Claude Code-credentials` item in the login Keychain
+- Linux and Windows: `~/.claude/.credentials.json`
+
+A profile also saves the `oauthAccount` block from `~/.claude.json` (the account email and organization), and `switch` writes it back.
+
+ccs keeps profiles in `~/.ccs/accounts/` with `0600` permissions.
+
+Quit every Claude Code session before you run `ccs account switch`, then start Claude Code again. A session left open can write its old login back when it refreshes its token.
+
+Claude Code refreshes the login after you save it, so `switch` first copies the current login into the profile with the same account and organization. If no profile matches, `switch` stops and changes nothing. Run `ccs account save <name>` first.
+
+ccs does not yet handle `CLAUDE_CONFIG_DIR` or Claude Code's opt-in Windows Credential Manager storage.
 
 ---
 
