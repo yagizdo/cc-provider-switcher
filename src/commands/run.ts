@@ -4,7 +4,8 @@ import fs from 'fs/promises'
 import { rmSync } from 'fs'
 import os from 'os'
 import path from 'path'
-import { buildEnvBlock, CLAUDE_NATIVE_NAMES } from './switch.js'
+import { buildEnvBlock } from './switch.js'
+import { CLAUDE_NATIVE_NAMES } from '../providers/registry.js'
 import * as display from '../utils/display.js'
 
 // commander's optional [region] would take the first word after `--`, so the tail is cut off before parsing.

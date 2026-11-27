@@ -9,6 +9,7 @@ import { registerDoctorCommand } from './commands/doctor.js'
 import { registerAccountCommand } from './commands/account.js'
 import { registerRunCommand, splitClaudeArgs } from './commands/run.js'
 import { registerTestCommand } from './commands/test.js'
+import { registerProviderCommand } from './commands/provider.js'
 import * as display from './utils/display.js'
 
 const require = createRequire(import.meta.url)
@@ -28,6 +29,7 @@ registerAccountCommand(program)
 const { argv, claudeArgs } = splitClaudeArgs(process.argv)
 registerRunCommand(program, claudeArgs)
 registerTestCommand(program)
+registerProviderCommand(program)
 registerSwitchCommand(program)
 
 // One line for an expected failure (unknown provider, bad config) instead of a stack trace.

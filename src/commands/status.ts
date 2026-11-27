@@ -1,8 +1,25 @@
 import { type Command } from 'commander'
-import { loadRegistry } from '../providers/registry.js'
+import { allProviders } from '../providers/registry.js'
+import { loadUserConfig } from '../config/user-config.js'
+import { type Provider } from '../types.js'
 import { readUserSettings, readProjectSettings } from '../config/claude-settings.js'
 import { readAuthState, describeAuthSource, loginOverrideWarning } from '../config/auth-source.js'
 import * as display from '../utils/display.js'
+
+// Longest prefix wins: a custom http://127.0.0.1:1234/v1 must not show as LM Studio's http://127.0.0.1:1234.
+function providerFor(baseUrl: string, providers: Provider[]): Provider | undefined {
+  let best: Provider | undefined
+  let bestLength = -1
+  for (const p of providers) {
+    for (const url of [p.baseUrl, ...Object.values(p.regions ?? {})]) {
+      if (baseUrl.startsWith(url) && url.length > bestLength) {
+        best = p
+        bestLength = url.length
+      }
+    }
+  }
+  return best
+}
 
 export function registerStatusCommand(program: Command): void {
   program
@@ -14,7 +31,7 @@ export function registerStatusCommand(program: Command): void {
         readProjectSettings(),
       ])
 
-      const registry = loadRegistry()
+      const providers = Object.values(allProviders(await loadUserConfig()))
 
       for (const [scope, settings] of [
         ['User', userSettings],
@@ -24,10 +41,7 @@ export function registerStatusCommand(program: Command): void {
         const baseUrl = env['ANTHROPIC_BASE_URL']
         if (!baseUrl) continue
 
-        const providerEntry = Object.entries(registry.providers).find(([, p]) =>
-          baseUrl.startsWith(p.baseUrl)
-        )
-        const providerName = providerEntry ? providerEntry[1].name : 'Unknown'
+        const providerName = providerFor(baseUrl, providers)?.name ?? 'Unknown'
         const model = env['ANTHROPIC_MODEL'] ?? 'unknown'
         const key = env['ANTHROPIC_AUTH_TOKEN'] ?? ''
 

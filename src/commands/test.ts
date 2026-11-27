@@ -1,6 +1,7 @@
 import { type Command } from 'commander'
 import chalk from 'chalk'
-import { buildEnvBlock, CLAUDE_NATIVE_NAMES } from './switch.js'
+import { buildEnvBlock } from './switch.js'
+import { CLAUDE_NATIVE_NAMES } from '../providers/registry.js'
 import * as display from '../utils/display.js'
 
 const TIMEOUT_MS = 60_000

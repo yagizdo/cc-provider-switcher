@@ -83,6 +83,8 @@ ccs seed
 | `ccs list` | List all available providers |
 | `ccs status` | Show current provider, model, and API key |
 | `ccs config` | Interactive API key setup |
+| `ccs provider add <name> <baseUrl> -m <id>` | Add a custom provider: an Anthropic-compatible endpoint that ccs does not ship with |
+| `ccs provider remove <name>` | Remove a custom provider. Its stored API key stays in the config file |
 | `ccs reset` | Remove ccs-managed settings and return to Claude Code's native default |
 | `ccs reset --project` | Reset project-level settings |
 | `ccs reset --all` | Reset both user and project settings |
@@ -202,6 +204,46 @@ To make it permanent, override all four model fields (overrides replace `models`
 
 Use the "API Model Identifier" shown in LM Studio. Set the context length to 32k or more.
 
+### Custom providers
+
+A custom provider is an Anthropic-compatible endpoint that ccs does not ship with, such as your own proxy or a LiteLLM or vLLM server. Add one with a command, then use it like a built-in provider:
+
+```sh
+ccs provider add myproxy https://proxy.example.com -m my-model
+ccs test myproxy
+ccs myproxy
+```
+
+`provider add` adds one entry to `~/.ccs/config.json`. Your keys and other settings stay as they are. The command does not take an API key, because every local user can read process arguments. Set `CCS_MYPROXY_API_KEY` or run `ccs config`.
+
+You can also write the entry by hand. Only `baseUrl` and `models.sonnet` are required:
+
+```json
+{
+  "customProviders": {
+    "myproxy": {
+      "baseUrl": "https://proxy.example.com",
+      "models": { "sonnet": "my-model" }
+    }
+  }
+}
+```
+
+Fields you leave out get these values:
+
+- `name`: the entry's key (`myproxy`)
+- `models.opus`, `models.haiku` and `defaultModel`: the value of `models.sonnet`
+- `keyEnvVar`: `CCS_<NAME>_API_KEY`, with `-` changed to `_`
+- `aliases`: none
+
+The optional fields from [Adding providers](#adding-providers) work here too: `aliases`, `regions`, `supportedCapabilities` and `thinkingNote`, plus `testNote`, a warning `ccs test` prints before it sends anything. For a server that needs no key, set `"keyOptional": true`.
+
+Names and aliases use lowercase letters, digits, `-` and `_`. A name or alias can't match a built-in provider or alias, a ccs command (`list`, `test`, `provider` and the rest), or `claude`, `anthropic` and `sonnet`. To change a built-in provider, use `providerOverrides`.
+
+If the config file is not valid JSON, or a custom entry has a wrong field, every ccs command stops with one line that names the file and the field. No command writes to the file until you fix it.
+
+`ccs provider remove myproxy` deletes the entry and keeps `keys.myproxy`, because many providers show a key only once. Delete the key from the file if you no longer need it. While it is there, `ccs provider add myproxy` refuses to run, so the old key never goes to a new URL.
+
 ### What ccs writes
 
 ccs modifies only the `env` block in Claude Code settings. It never touches other fields (permissions, hooks, etc.).
@@ -268,7 +310,7 @@ ccs does not yet handle `CLAUDE_CONFIG_DIR` or Claude Code's opt-in Windows Cred
 
 ## Adding providers
 
-Add an entry to `src/providers/providers.json` and submit a PR:
+To use a provider only on your machine, add it as a [custom provider](#custom-providers). To ship it with ccs, add an entry to `src/providers/providers.json` and submit a PR:
 
 ```json
 {
