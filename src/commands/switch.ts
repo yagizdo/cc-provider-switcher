@@ -1,23 +1,15 @@
 import { type Command } from 'commander'
 import { resolveProvider, resolveBaseUrl, getApiKey, withModel } from '../providers/registry.js'
 import { loadUserConfig } from '../config/user-config.js'
-import { writeUserSettings, writeProjectSettings } from '../config/claude-settings.js'
+import { writeUserSettings, writeProjectSettings, type ENV_KEYS } from '../config/claude-settings.js'
 import * as display from '../utils/display.js'
 
-const CLAUDE_NATIVE_NAMES = new Set(['claude', 'anthropic', 'sonnet'])
+export const CLAUDE_NATIVE_NAMES = new Set(['claude', 'anthropic', 'sonnet'])
 
-async function doSwitch(
-  providerName: string,
-  region: string | undefined,
-  scope: 'user' | 'project',
-  model?: string
-): Promise<void> {
-  if (CLAUDE_NATIVE_NAMES.has(providerName.toLowerCase())) {
-    display.info('Claude is Claude Code\'s native default — there is nothing to switch to.')
-    display.info('Run "ccs reset" to clear provider overrides and return to it.')
-    return
-  }
+// Every key is required: `ccs run` sends the block as is, and a missing key lets a lower settings layer win.
+export type FullEnvBlock = Record<(typeof ENV_KEYS)[number], string>
 
+export async function buildEnvBlock(providerName: string, region: string | undefined, model?: string) {
   const userConfig = await loadUserConfig()
   const resolved = resolveProvider(providerName, userConfig)
   const provider = model ? withModel(resolved, model) : resolved
@@ -33,7 +25,7 @@ async function doSwitch(
   }
 
   const caps = provider.supportedCapabilities?.join(',') ?? ''
-  const envBlock = {
+  const envBlock: FullEnvBlock = {
     ANTHROPIC_BASE_URL: baseUrl,
     ANTHROPIC_AUTH_TOKEN: apiKey ?? '',
     ANTHROPIC_MODEL: provider.defaultModel,
@@ -45,6 +37,22 @@ async function doSwitch(
     ANTHROPIC_DEFAULT_OPUS_MODEL_SUPPORTED_CAPABILITIES: caps,
     ANTHROPIC_DEFAULT_HAIKU_MODEL_SUPPORTED_CAPABILITIES: caps,
   }
+  return { provider, baseUrl, apiKey, envBlock }
+}
+
+async function doSwitch(
+  providerName: string,
+  region: string | undefined,
+  scope: 'user' | 'project',
+  model?: string
+): Promise<void> {
+  if (CLAUDE_NATIVE_NAMES.has(providerName.toLowerCase())) {
+    display.info('Claude is Claude Code\'s native default — there is nothing to switch to.')
+    display.info('Run "ccs reset" to clear provider overrides and return to it.')
+    return
+  }
+
+  const { provider, baseUrl, apiKey, envBlock } = await buildEnvBlock(providerName, region, model)
 
   if (scope === 'project') {
     await writeProjectSettings(envBlock)
