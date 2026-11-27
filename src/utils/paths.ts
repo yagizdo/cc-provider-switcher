@@ -12,3 +12,8 @@ export const CLAUDE_GLOBAL_CONFIG_FILE = path.join(os.homedir(), '.claude.json')
 export function getProjectSettingsPath(): string {
   return path.join(process.cwd(), '.claude', 'settings.local.json')
 }
+
+// The shared, usually committed, project file. Claude Code applies its env too; ccs never writes it.
+export function getSharedProjectSettingsPath(): string {
+  return path.join(process.cwd(), '.claude', 'settings.json')
+}

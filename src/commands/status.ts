@@ -1,6 +1,7 @@
 import { type Command } from 'commander'
 import { loadRegistry } from '../providers/registry.js'
 import { readUserSettings, readProjectSettings } from '../config/claude-settings.js'
+import { readAuthState, describeAuthSource, loginOverrideWarning } from '../config/auth-source.js'
 import * as display from '../utils/display.js'
 
 export function registerStatusCommand(program: Command): void {
@@ -48,5 +49,15 @@ export function registerStatusCommand(program: Command): void {
       if (!hasAny) {
         display.info('No provider configured. Run "ccs <provider>" to switch.')
       }
+
+      const { account, source } = await readAuthState()
+      const email = typeof account?.emailAddress === 'string' ? account.emailAddress : undefined
+      const org = typeof account?.organizationName === 'string' ? account.organizationName : undefined
+      console.log('\nClaude account:')
+      display.table([
+        ['Login', email ? (org ? `${email} (${org})` : email) : 'not logged in'],
+        ['Credential', source ? describeAuthSource(source) : email ? '/login' : 'none'],
+      ])
+      if (source && email) display.warn(loginOverrideWarning(source))
     })
 }

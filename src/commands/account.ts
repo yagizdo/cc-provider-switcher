@@ -6,6 +6,7 @@ import {
   listAccounts,
   deleteAccount,
 } from '../accounts/account-manager.js'
+import { readAuthState, loginOverrideWarning } from '../config/auth-source.js'
 import * as display from '../utils/display.js'
 
 export function registerAccountCommand(program: Command): void {
@@ -31,6 +32,8 @@ export function registerAccountCommand(program: Command): void {
       try {
         await switchAccount(name)
         display.success(`Switched to account "${name}".`)
+        const { source } = await readAuthState()
+        if (source) display.warn(loginOverrideWarning(source))
       } catch (err) {
         display.error(String(err))
         process.exit(1)
@@ -46,7 +49,7 @@ export function registerAccountCommand(program: Command): void {
         display.info('No saved accounts. Run "ccs account save <name>" to save one.')
         return
       }
-      display.table(accounts.map((a) => [a.name, a.savedAt]))
+      display.table(accounts.map((a) => [(a.active ? '* ' : '  ') + a.name, a.savedAt]))
     })
 
   account
