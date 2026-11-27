@@ -15,6 +15,7 @@ export const ProviderSchema = z.object({
   regions: z.record(z.string(), z.string()).optional(),
   supportedCapabilities: z.array(z.string()).optional(),
   thinkingNote: z.string().optional(),
+  testNote: z.string().optional(),
 })
 
 export const ProviderRegistrySchema = z.object({

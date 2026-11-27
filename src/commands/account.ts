@@ -1,4 +1,3 @@
-import readline from 'readline'
 import { type Command } from 'commander'
 import {
   saveAccount,
@@ -56,7 +55,7 @@ export function registerAccountCommand(program: Command): void {
     .command('delete <name>')
     .description('Delete a saved account profile')
     .action(async (name: string) => {
-      const confirmed = await confirm(`Delete account "${name}"?`)
+      const confirmed = await display.confirm(`Delete account "${name}"?`)
       if (!confirmed) {
         display.info('Cancelled.')
         return
@@ -69,14 +68,4 @@ export function registerAccountCommand(program: Command): void {
         process.exit(1)
       }
     })
-}
-
-function confirm(prompt: string): Promise<boolean> {
-  const rl = readline.createInterface({ input: process.stdin, output: process.stdout })
-  return new Promise((resolve) => {
-    rl.question(`${prompt} [y/N] `, (answer) => {
-      rl.close()
-      resolve(answer.trim().toLowerCase() === 'y')
-    })
-  })
 }

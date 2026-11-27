@@ -78,7 +78,8 @@ ccs seed
 | `ccs <provider> [region]` | Switch Claude Code to a provider (user-level) |
 | `ccs project <provider> [region]` | Switch for current project only |
 | `ccs run <provider> [region]` | Start Claude Code with a provider in this terminal only, without changing any settings file. Put claude's own flags after `--`: `ccs run glm -- --resume` |
-| `ccs <provider> --model <id>` | Use one model ID for sonnet/opus/haiku (also works with `project` and `run`) |
+| `ccs test <provider> [region]` | Send one short request for each model ID to check that the key, base URL and model IDs work. The provider bills these requests |
+| `ccs <provider> --model <id>` | Use one model ID for sonnet/opus/haiku (also works with `project`, `run` and `test`) |
 | `ccs list` | List all available providers |
 | `ccs status` | Show current provider, model, and API key |
 | `ccs config` | Interactive API key setup |
@@ -92,6 +93,8 @@ ccs seed
 | `ccs account delete <name>` | Delete a saved profile |
 
 A `ccs run` session uses its provider even when `ccs <provider>` or `ccs project` set a different one; other sessions keep theirs. `ccs status` does not show a `ccs run` session.
+
+In `ccs test`, a model passes when the provider answers with HTTP 200. Qwen's Coding Plan terms ban automated and non-interactive calls and say a key used that way can be blocked. They don't say whether one test request counts. So for Qwen, `ccs test` prints a warning and asks before it sends anything. `--accept` sends without asking. Without a terminal and without `--accept`, `ccs test` sends nothing.
 
 ---
 

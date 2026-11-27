@@ -53,7 +53,8 @@
         "haiku": "qwen3.7-plus"
       },
       "supportedCapabilities": ["effort", "thinking"],
-      "thinkingNote": "Supports thinking_budget for token-level control"
+      "thinkingNote": "Supports thinking_budget for token-level control",
+      "testNote": "Qwen's Coding Plan terms ban automated and non-interactive calls and say a key used that way can be blocked. They don't say whether one test request counts."
     },
     "glm": {
       "name": "GLM",
