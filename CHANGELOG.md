@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.5.0 — 2026-11-27
+
+### Features
+
+- `ccs status` shows the Claude account you are logged in to (email and organization) and the credential Claude Code will use. It checks the shell and the user and project settings files in the order Claude Code reads them (82733a3)
+- When a provider token or another credential outranks your `/login` account, `ccs status` and `ccs account switch` say where it comes from and how to remove it (82733a3)
+- `ccs account list` puts a `*` next to the profile you are logged in with (82733a3)
+
+### Bug Fixes
+
+- On macOS, `ccs account save` and `ccs account switch` now read and write the login in the `Claude Code-credentials` Keychain item. Before, they used `~/.claude/.credentials.json`, which Claude Code reads only when the Keychain has no login (1c76fa1)
+- A profile also saves the account email and organization (`oauthAccount` from `~/.claude.json`), and `switch` restores them (1c76fa1)
+- `ccs account switch` first copies the current login into the profile with the same account and organization, because Claude Code refreshes the token after you save it. If no profile matches, it stops and changes nothing (1c76fa1)
+
+**Full Changelog:** https://github.com/yagizdo/cc-provider-switcher/compare/v0.4.0...v0.5.0
+
 ## v0.4.0 — 2026-11-09
 
 ### Features
