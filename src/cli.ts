@@ -11,6 +11,9 @@ import { registerAccountCommand } from './commands/account.js'
 const require = createRequire(import.meta.url)
 const { version } = require('../package.json')
 
+// Root options only before a subcommand: otherwise the root -m takes `ccs project glm -m x`'s model.
+program.enablePositionalOptions()
+
 program.name('ccs').description('Switch Claude Code between AI providers').version(version)
 
 registerListCommand(program)
