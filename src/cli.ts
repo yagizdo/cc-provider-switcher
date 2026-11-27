@@ -8,6 +8,7 @@ import { registerResetCommand } from './commands/reset.js'
 import { registerDoctorCommand } from './commands/doctor.js'
 import { registerAccountCommand } from './commands/account.js'
 import { registerRunCommand, splitClaudeArgs } from './commands/run.js'
+import { registerTestCommand } from './commands/test.js'
 
 const require = createRequire(import.meta.url)
 const { version } = require('../package.json')
@@ -25,6 +26,7 @@ registerDoctorCommand(program)
 registerAccountCommand(program)
 const { argv, claudeArgs } = splitClaudeArgs(process.argv)
 registerRunCommand(program, claudeArgs)
+registerTestCommand(program)
 registerSwitchCommand(program)
 
 program.parse(argv)
