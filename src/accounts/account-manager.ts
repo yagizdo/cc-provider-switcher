@@ -7,6 +7,8 @@ import { type CredentialStore, defaultCredentialStore } from './credential-store
 interface AccountMeta {
   name: string
   savedAt: string
+  // The profile whose account and organization match the current login.
+  active: boolean
 }
 
 interface AccountSnapshot {
@@ -102,14 +104,22 @@ function accountId(oauthAccount: unknown): string | undefined {
   return typeof a?.accountUuid === 'string' ? `${a.accountUuid}/${String(a.organizationUuid)}` : undefined
 }
 
-export async function listAccounts(accountsDir = CCS_ACCOUNTS_DIR): Promise<AccountMeta[]> {
+export async function listAccounts(
+  accountsDir = CCS_ACCOUNTS_DIR,
+  claudeConfigPath = CLAUDE_GLOBAL_CONFIG_FILE
+): Promise<AccountMeta[]> {
+  const current = accountId((await readJsonFile<{ oauthAccount?: unknown }>(claudeConfigPath))?.oauthAccount)
   try {
     const files = await fs.readdir(accountsDir)
     const accounts: AccountMeta[] = []
     for (const file of files) {
       if (!file.endsWith('.json')) continue
-      const raw = await readJsonFile<{ savedAt: string }>(path.join(accountsDir, file))
-      accounts.push({ name: file.replace(/\.json$/, ''), savedAt: raw?.savedAt ?? '' })
+      const raw = await readJsonFile<{ savedAt: string; oauthAccount?: unknown }>(path.join(accountsDir, file))
+      accounts.push({
+        name: file.replace(/\.json$/, ''),
+        savedAt: raw?.savedAt ?? '',
+        active: current !== undefined && accountId(raw?.oauthAccount) === current,
+      })
     }
     return accounts.sort((a, b) => a.name.localeCompare(b.name))
   } catch {

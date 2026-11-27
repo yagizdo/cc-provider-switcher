@@ -248,6 +248,14 @@ Quit every Claude Code session before you run `ccs account switch`, then start C
 
 Claude Code refreshes the login after you save it, so `switch` first copies the current login into the profile with the same account and organization. If no profile matches, `switch` stops and changes nothing. Run `ccs account save <name>` first.
 
+### When a provider is active
+
+While a provider is active, Claude Code does not use your `/login` account. `ccs <provider>` writes `ANTHROPIC_AUTH_TOKEN`, and Claude Code ranks that token above the login. `ccs account switch` still swaps the saved login, and Claude Code uses it again once you remove the provider with `ccs reset`.
+
+`ccs status` shows the account you are logged in to and the credential Claude Code will use. When that credential is not the login, `ccs status` and `ccs account switch` say where it comes from and how to remove it. `ccs account list` puts a `*` next to the profile you are logged in with.
+
+With a provider active and a login saved, Claude Code shows "Both ANTHROPIC_AUTH_TOKEN and /login managed key set · auth may not work as expected". This is expected: requests go to the provider with its token. Run `ccs reset` to go back to the login.
+
 ccs does not yet handle `CLAUDE_CONFIG_DIR` or Claude Code's opt-in Windows Credential Manager storage.
 
 ---
