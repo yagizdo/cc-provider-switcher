@@ -90,6 +90,10 @@
       "defaultModel": "step-3.7-flash",
       "aliases": ["sf"],
       "keyEnvVar": "STEPFUN_API_KEY",
+      "regions": {
+        "global": "https://api.stepfun.ai",
+        "plan": "https://api.stepfun.ai/step_plan"
+      },
       "models": {
         "sonnet": "step-3.7-flash",
         "opus": "step-3.7-flash",
