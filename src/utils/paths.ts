@@ -4,6 +4,7 @@ import path from 'path'
 export const CCS_DIR = path.join(os.homedir(), '.ccs')
 export const CCS_CONFIG_FILE = path.join(CCS_DIR, 'config.json')
 export const CCS_ACCOUNTS_DIR = path.join(CCS_DIR, 'accounts')
+export const CCS_STATE_FILE = path.join(CCS_DIR, 'state.json')
 // Claude Code uses the value as given (no ~ expansion, no resolve); an empty value counts as unset here.
 // Settings files cannot move it, so only the process environment is read.
 export const CLAUDE_CONFIG_DIR = process.env.CLAUDE_CONFIG_DIR || undefined

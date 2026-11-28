@@ -1,5 +1,7 @@
 import { type Command } from 'commander'
-import { clearManagedSettings } from '../config/claude-settings.js'
+import { clearManagedSettings, readUserSettings } from '../config/claude-settings.js'
+import { loadUserConfig } from '../config/user-config.js'
+import { describeSettings, recordPrevious } from '../config/state.js'
 import * as display from '../utils/display.js'
 
 export function registerResetCommand(program: Command): void {
@@ -18,6 +20,15 @@ export function registerResetCommand(program: Command): void {
         return
       }
 
+      if (scope !== 'project') {
+        // Reset must still work with a broken config.json; only `ccs -` loses its way back.
+        try {
+          const before = describeSettings((await readUserSettings()).env ?? {}, await loadUserConfig())
+          await recordPrevious(before, { kind: 'native' })
+        } catch (err) {
+          display.warn(`Previous provider not saved, "ccs -" cannot undo this reset: ${(err as Error).message}`)
+        }
+      }
       await clearManagedSettings(scope)
       display.success(`Cleared ${desc} settings.`)
     })

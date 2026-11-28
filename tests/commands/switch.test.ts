@@ -130,6 +130,26 @@ describe('ccs project <provider> -m', () => {
   })
 })
 
+describe('ccs -', () => {
+  // A wrong reconstruction sends the user to another provider or region without a word.
+  it('returns to the previous provider and region, and back again', async () => {
+    const ccs = (...args: string[]) =>
+      execFileSync(path.resolve('node_modules/.bin/tsx'), [path.resolve('src/cli.ts'), ...args], {
+        cwd: tmpDir,
+        env: { ...process.env, HOME: tmpDir, CLAUDE_CONFIG_DIR: '', GLM_API_KEY: 'glm-test-key', DEEPSEEK_API_KEY: 'ds-test-key' },
+        stdio: 'pipe',
+      })
+    const baseUrl = async () =>
+      JSON.parse(await fs.readFile(path.join(tmpDir, '.claude', 'settings.json'), 'utf-8')).env.ANTHROPIC_BASE_URL
+    ccs('glm', 'china')
+    ccs('deepseek')
+    ccs('-')
+    expect(await baseUrl()).toBe('https://open.bigmodel.cn/api/anthropic')
+    ccs('-')
+    expect(await baseUrl()).toBe('https://api.deepseek.com/anthropic')
+  })
+})
+
 describe('provider override in config', () => {
   it('applies overridden model ID', () => {
     const provider = resolveProvider('deepseek', {

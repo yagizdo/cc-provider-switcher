@@ -80,6 +80,7 @@ ccs seed
 | `ccs run <provider> [region]` | Start Claude Code with a provider in this terminal only, without changing any settings file. Put claude's own flags after `--`: `ccs run glm -- --resume` |
 | `ccs test <provider> [region]` | Send one short request for each model ID to check that the key, base URL and model IDs work. The provider bills these requests |
 | `ccs <provider> --model <id>` | Use one model ID for sonnet/opus/haiku (also works with `project`, `run` and `test`) |
+| `ccs -` | Go back to the provider you had before the last `ccs <provider>`, `ccs -` or `ccs reset`, with the same region and model (or to Claude Code's native default). Run it again to swap back. User-level settings only. ccs looks up the API key again, as a normal switch does |
 | `ccs list` | List all available providers |
 | `ccs status` | Show current provider, model, and API key |
 | `ccs config` | Interactive API key setup |
@@ -93,6 +94,8 @@ ccs seed
 | `ccs account switch <name>` | Restore saved credentials |
 | `ccs account list` | List saved credential profiles |
 | `ccs account delete <name>` | Delete a saved profile |
+
+`ccs -` remembers what `settings.json` held just before each switch, so a provider you set by hand counts too. If that URL matches no provider ccs knows, `ccs -` says so and changes nothing.
 
 A `ccs run` session uses its provider even when `ccs <provider>` or `ccs project` set a different one; other sessions keep theirs. `ccs status` does not show a `ccs run` session.
 
