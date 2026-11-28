@@ -93,9 +93,13 @@ describe('resolveBaseUrl', () => {
     expect(resolveBaseUrl(p, 'china')).toBe('https://api.minimaxi.com/anthropic')
   })
 
-  it('returns default when region not found', () => {
-    const p = resolveProvider('deepseek')
-    expect(resolveBaseUrl(p, 'china')).toBe('https://api.deepseek.com/anthropic')
+  it('throws on an unknown region instead of falling back to the default', () => {
+    expect(() => resolveBaseUrl(resolveProvider('stepfun'), 'paln')).toThrow('Unknown region "paln" for StepFun. Regions: global, plan')
+    expect(() => resolveBaseUrl(resolveProvider('deepseek'), 'china')).toThrow('Unknown region "china" for DeepSeek. Regions: global')
+  })
+
+  it('accepts global for a provider without regions, as ccs list shows it', () => {
+    expect(resolveBaseUrl(resolveProvider('deepseek'), 'global')).toBe('https://api.deepseek.com/anthropic')
   })
 })
 

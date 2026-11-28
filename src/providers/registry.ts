@@ -98,8 +98,13 @@ function applyOverrides(name: string, provider: Provider, userConfig?: UserConfi
 }
 
 export function resolveBaseUrl(provider: Provider, region?: string): string {
-  if (region && provider.regions?.[region]) return provider.regions[region]
-  return provider.baseUrl
+  if (!region) return provider.baseUrl
+  if (provider.regions?.[region]) return provider.regions[region]
+  // `ccs list` shows "global" for a provider without regions, so that name means its base URL.
+  if (!provider.regions && region === 'global') return provider.baseUrl
+  // A silent fallback would send a typo like "paln" to a different, billed endpoint.
+  const names = provider.regions ? Object.keys(provider.regions).join(', ') : 'global'
+  throw new Error(`Unknown region "${region}" for ${provider.name}. Regions: ${names}`)
 }
 
 export function getApiKey(provider: ResolvedProvider, userConfig?: UserConfig): string | null {
