@@ -5,6 +5,7 @@ import { type Provider } from '../types.js'
 import { readUserSettings, readProjectSettings } from '../config/claude-settings.js'
 import { readAuthState, describeAuthSource, loginOverrideWarning } from '../config/auth-source.js'
 import * as display from '../utils/display.js'
+import { CLAUDE_CONFIG_DIR } from '../utils/paths.js'
 
 // Longest prefix wins: a custom http://127.0.0.1:1234/v1 must not show as LM Studio's http://127.0.0.1:1234.
 function providerFor(baseUrl: string, providers: Provider[]): Provider | undefined {
@@ -69,6 +70,7 @@ export function registerStatusCommand(program: Command): void {
       const org = typeof account?.organizationName === 'string' ? account.organizationName : undefined
       console.log('\nClaude account:')
       display.table([
+        ...(CLAUDE_CONFIG_DIR ? [['Config dir', `${CLAUDE_CONFIG_DIR} (CLAUDE_CONFIG_DIR)`] as [string, string]] : []),
         ['Login', email ? (org ? `${email} (${org})` : email) : 'not logged in'],
         ['Credential', source ? describeAuthSource(source) : email ? '/login' : 'none'],
       ])
