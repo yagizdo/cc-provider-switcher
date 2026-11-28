@@ -13,7 +13,7 @@ interface AccountMeta {
 
 interface AccountSnapshot {
   credentials: unknown
-  // Account identity Claude Code shows and sends (email, org); lives in ~/.claude.json.
+  // Account identity Claude Code shows and sends (email, org); lives in ~/.claude.json or <CLAUDE_CONFIG_DIR>/.claude.json.
   oauthAccount?: unknown
   savedAt: string
 }

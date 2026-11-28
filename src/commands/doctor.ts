@@ -1,6 +1,6 @@
 import fs from 'fs/promises'
 import { type Command } from 'commander'
-import { CLAUDE_DIR } from '../utils/paths.js'
+import { CLAUDE_CONFIG_DIR, CLAUDE_DIR } from '../utils/paths.js'
 import { loadUserConfig } from '../config/user-config.js'
 import chalk from 'chalk'
 
@@ -26,7 +26,7 @@ export function registerDoctorCommand(program: Command): void {
         detail: major < 20 ? 'ccs requires Node.js >=20' : undefined,
       })
 
-      // ~/.claude/ exists
+      // Claude Code's config directory exists
       let claudeDirExists = false
       try {
         await fs.access(CLAUDE_DIR)
@@ -35,7 +35,7 @@ export function registerDoctorCommand(program: Command): void {
         /* skip */
       }
       checks.push({
-        label: `Claude Code directory (~/.claude/)`,
+        label: `Claude Code directory (${CLAUDE_CONFIG_DIR ? `${CLAUDE_CONFIG_DIR}, from CLAUDE_CONFIG_DIR` : '~/.claude/'})`,
         pass: claudeDirExists,
         detail: claudeDirExists ? undefined : 'Not found. Is Claude Code installed?',
       })

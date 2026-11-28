@@ -1,7 +1,8 @@
 import fs from 'fs/promises'
 import os from 'os'
+import { createHash } from 'crypto'
 import { spawnSync } from 'child_process'
-import { CLAUDE_CREDENTIALS_FILE } from '../utils/paths.js'
+import { CLAUDE_CONFIG_DIR, CLAUDE_CREDENTIALS_FILE } from '../utils/paths.js'
 import { writeFileAtomically } from '../utils/fs.js'
 
 // Where Claude Code keeps its OAuth credentials (a JSON string).
@@ -27,7 +28,7 @@ export function fileStore(filePath: string): CredentialStore {
   }
 }
 
-// Same service and account names Claude Code uses on macOS (without CLAUDE_CONFIG_DIR).
+// Same service and account names Claude Code uses on macOS.
 const KEYCHAIN_SERVICE = 'Claude Code-credentials'
 const KEYCHAIN_NOT_FOUND = 44
 // `security -i` drops longer input lines.
@@ -43,8 +44,16 @@ function keychainAccount(): string {
   return /^[a-zA-Z0-9._-]+$/.test(name) ? name : 'claude-code-user'
 }
 
+// With CLAUDE_CONFIG_DIR, Claude Code adds the first 8 hex chars of the value's sha256 (NFC, as given),
+// so two spellings of one folder are two items. Measured on Claude Code 2.1.332.
+export function keychainService(configDir = CLAUDE_CONFIG_DIR): string {
+  if (!configDir) return KEYCHAIN_SERVICE
+  const hash = createHash('sha256').update(configDir.normalize('NFC')).digest('hex').slice(0, 8)
+  return `${KEYCHAIN_SERVICE}-${hash}`
+}
+
 export function keychainStore(
-  service = KEYCHAIN_SERVICE,
+  service = keychainService(),
   account = keychainAccount()
 ): CredentialStore {
   return {
@@ -78,7 +87,7 @@ export function keychainStore(
 
 // macOS: read the Keychain first, then the plaintext file Claude Code falls back to when the Keychain is unusable.
 // Writes go to the Keychain only and fail if it is locked; Claude Code reads the Keychain before the file.
-// Linux and Windows: ~/.claude/.credentials.json.
+// Linux and Windows: .credentials.json in ~/.claude or CLAUDE_CONFIG_DIR.
 // shortcut: Windows Credential Manager (Claude Code's opt-in `tengu_windows_credman` mode) is not read; add it if that becomes the default.
 export function defaultCredentialStore(platform = process.platform): CredentialStore {
   const file = fileStore(CLAUDE_CREDENTIALS_FILE)

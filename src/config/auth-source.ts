@@ -2,6 +2,7 @@ import path from 'path'
 import { readUserSettings, readProjectSettings } from './claude-settings.js'
 import { readJsonFile } from '../utils/fs.js'
 import {
+  CLAUDE_CONFIG_DIR,
   CLAUDE_GLOBAL_CONFIG_FILE,
   CLAUDE_SETTINGS_FILE,
   getProjectSettingsPath,
@@ -43,7 +44,7 @@ const USER_SCOPE_ONLY = new Set(['CLAUDE_CODE_OAUTH_TOKEN'])
 
 const ORIGIN_LABEL: Record<AuthOrigin, string> = {
   shell: 'your shell',
-  user: '~/.claude/settings.json',
+  user: CLAUDE_CONFIG_DIR ? CLAUDE_SETTINGS_FILE : '~/.claude/settings.json',
   shared: '.claude/settings.json',
   local: '.claude/settings.local.json',
 }

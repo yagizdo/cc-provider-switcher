@@ -248,7 +248,7 @@ If the config file is not valid JSON, or a custom entry has a wrong field, every
 
 ccs modifies only the `env` block in Claude Code settings. It never touches other fields (permissions, hooks, etc.).
 
-**User-level:** `~/.claude/settings.json`
+**User-level:** `~/.claude/settings.json`, or `settings.json` in the `CLAUDE_CONFIG_DIR` folder when that variable is set
 **Project-level:** `.claude/settings.local.json`
 
 ```json
@@ -285,10 +285,10 @@ ccs account delete personal # delete "personal"
 
 ccs reads and writes the login where Claude Code keeps it:
 
-- macOS: the `Claude Code-credentials` item in the login Keychain
-- Linux and Windows: `~/.claude/.credentials.json`
+- macOS: the `Claude Code-credentials` item in the login Keychain. With `CLAUDE_CONFIG_DIR` set, Claude Code adds a hash of that value to the item name, and ccs uses the same name.
+- Linux and Windows: `~/.claude/.credentials.json`, or `.credentials.json` in the `CLAUDE_CONFIG_DIR` folder
 
-A profile also saves the `oauthAccount` block from `~/.claude.json` (the account email and organization), and `switch` writes it back.
+A profile also saves the `oauthAccount` block (the account email and organization) from `~/.claude.json`, or from `.claude.json` in the `CLAUDE_CONFIG_DIR` folder. `switch` writes it back.
 
 ccs keeps profiles in `~/.ccs/accounts/` with `0600` permissions.
 
@@ -304,7 +304,21 @@ While a provider is active, Claude Code does not use your `/login` account. `ccs
 
 With a provider active and a login saved, Claude Code shows "Both ANTHROPIC_AUTH_TOKEN and /login managed key set · auth may not work as expected". This is expected: requests go to the provider with its token. Run `ccs reset` to go back to the login.
 
-ccs does not yet handle `CLAUDE_CONFIG_DIR` or Claude Code's opt-in Windows Credential Manager storage.
+### Separate config folders
+
+When `CLAUDE_CONFIG_DIR` is set, Claude Code reads its settings and login from that folder. Run ccs with the same value and it uses the folder too: `ccs <provider>`, `ccs reset`, `ccs status`, `ccs doctor` and `ccs account` read and write the files and the Keychain item that belong to it. `ccs status` prints the folder on a `Config dir` line.
+
+```sh
+export CLAUDE_CONFIG_DIR=~/.claude-work
+ccs deepseek
+claude
+```
+
+Write the value the same way each time. Claude Code builds the Keychain item name from the exact text, so on macOS `~/.claude-work` and `~/.claude-work/` hold two separate logins.
+
+Saved profiles in `~/.ccs/accounts/` are shared by all folders, and `ccs account switch` writes a profile into the folder that is active. If one profile is active in two folders at the same time, both use the same login, and a token refresh in one folder may sign the other one out.
+
+ccs does not handle Claude Code's opt-in Windows Credential Manager storage.
 
 ---
 
