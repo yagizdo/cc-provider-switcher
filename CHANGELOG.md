@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.7.0 — 2026-11-28
+
+### Features
+
+- Run `ccs` with no arguments in a terminal to pick a provider from a list. Arrow keys move, Enter switches (user-level), Esc leaves everything as it is. For a provider with regions, a second list asks for the region. The top row goes back to Claude Code's native default. Outside a terminal, `ccs` prints the help and exits 1 (463a45c)
+- `ccs -` goes back to the provider you had before the last switch or `ccs reset`, with the same region and model. Run it again to swap back. A provider you set by hand counts too, as long as ccs knows its URL (25cadbf)
+- `ccs stepfun plan` uses StepFun's Step Plan subscription at `https://api.stepfun.ai/step_plan`. `ccs stepfun` still uses the pay-as-you-go API (8d74425)
+
+### Bug Fixes
+
+- A `settings.json` or `settings.local.json` that ccs could not read or parse used to count as empty, so the next switch or reset kept only the `env` block and deleted permissions, hooks and every other field. Now only a missing file counts as empty. For any other problem, switch, `ccs project`, `ccs -` and `ccs reset` stop with one line that names the file and change nothing. `ccs status` warns and keeps going (dce047d)
+- ccs still accepts comments and trailing commas in a settings file, which Claude Code itself rejects, but it now writes plain JSON and says the comments were removed. A rewrite keeps the file's permissions; before, they became 0644 (dce047d)
+- An unknown region name (`ccs stepfun paln`) prints an error with the valid regions and exits 1. Before, ccs switched to the provider's default URL without a word (8d74425)
+
+**Full Changelog:** https://github.com/yagizdo/cc-provider-switcher/compare/v0.6.0...v0.7.0
+
 ## v0.6.0 — 2026-11-28
 
 ### Features

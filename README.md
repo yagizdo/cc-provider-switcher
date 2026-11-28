@@ -116,7 +116,7 @@ In `ccs test`, a model passes when the provider answers with HTTP 200. Qwen's Co
 | Seed/Doubao | `seed` | `doubao` | on/off | global |
 | StepFun | `stepfun` | `sf` | effort | global, plan |
 | OpenRouter | `openrouter` | `or` | passthrough | global |
-| LM Studio | `lmstudio` | `lms` | — | local |
+| LM Studio | `lmstudio` | `lms` | — | global |
 
 Claude (Anthropic) isn't a switchable provider — it's Claude Code's own native default. Run `ccs reset` to return to it.
 
