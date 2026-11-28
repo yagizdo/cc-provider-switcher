@@ -1,3 +1,4 @@
+import fs from 'fs/promises'
 import { z } from 'zod'
 import { type UserConfig } from '../types.js'
 import { allProviders, resolveProvider } from '../providers/registry.js'
@@ -36,12 +37,17 @@ export function describeSettings(env: Record<string, string>, userConfig: UserCo
 }
 
 // A missing or broken file means no previous state: it holds nothing the user typed, and the next switch rewrites it.
-export async function readPrevious(statePath = CCS_STATE_FILE): Promise<Previous | null> {
-  return (await readJsonFile(statePath, StateSchema))?.previous ?? null
+export async function readPrevious(): Promise<Previous | null> {
+  return (await readJsonFile(CCS_STATE_FILE, StateSchema))?.previous ?? null
 }
 
 // Like kubectx: switching to the state you are already in keeps the older previous.
-export async function recordPrevious(before: Previous, after: Previous, statePath = CCS_STATE_FILE): Promise<void> {
+export async function recordPrevious(before: Previous, after: Previous): Promise<void> {
   if (JSON.stringify(before) === JSON.stringify(after)) return
-  await writeFileAtomically(statePath, JSON.stringify({ previous: before }, null, 2) + '\n', 0o600)
+  await writeFileAtomically(CCS_STATE_FILE, JSON.stringify({ previous: before }, null, 2) + '\n', 0o600)
+}
+
+// For a change ccs could not record: an older previous left in place would make `ccs -` jump two states back.
+export async function forgetPrevious(): Promise<void> {
+  await fs.rm(CCS_STATE_FILE, { force: true })
 }
