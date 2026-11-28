@@ -114,7 +114,7 @@ In `ccs test`, a model passes when the provider answers with HTTP 200. Qwen's Co
 | Qwen | `qwen` | — | effort | global, china |
 | GLM | `glm` | `glm5` | effort | global, china |
 | Seed/Doubao | `seed` | `doubao` | on/off | global |
-| StepFun | `stepfun` | `sf` | effort | global |
+| StepFun | `stepfun` | `sf` | effort | global, plan |
 | OpenRouter | `openrouter` | `or` | passthrough | global |
 | LM Studio | `lmstudio` | `lms` | — | local |
 
@@ -124,6 +124,8 @@ Claude (Anthropic) isn't a switchable provider — it's Claude Code's own native
 - `effort` — reasoning_effort levels (low/medium/high)
 - `on/off` — thinking enabled/disabled, no effort control
 - `passthrough` — depends on the model routed through OpenRouter
+
+**StepFun regions:** `global` is StepFun's pay-as-you-go API. With a Step Plan subscription, run `ccs stepfun plan` so requests go to `https://api.stepfun.ai/step_plan` and use your plan's credits. StepFun's docs don't say whether one key works on both.
 
 ### Model mapping
 
