@@ -50,6 +50,17 @@ describe('writeUserSettings', () => {
     const settings = await readUserSettings(settingsPath)
     expect(settings.env?.ANTHROPIC_BASE_URL).toBe('https://api.deepseek.com/anthropic')
   })
+
+  // A file ccs could not parse used to be replaced by {} plus env, wiping permissions, hooks and the rest.
+  it('refuses to rewrite a settings file it cannot parse', async () => {
+    await fs.mkdir(tmpDir, { recursive: true })
+    const truncated = '{"permissions": {"allow": ["Bash"]}, "model": "op'
+    await fs.writeFile(settingsPath, truncated)
+    await expect(
+      writeUserSettings({ ANTHROPIC_BASE_URL: 'https://api.deepseek.com/anthropic' }, settingsPath)
+    ).rejects.toThrow(settingsPath)
+    expect(await fs.readFile(settingsPath, 'utf-8')).toBe(truncated)
+  })
 })
 
 describe('clearManagedSettings', () => {
