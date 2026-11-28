@@ -27,9 +27,15 @@ export function registerStatusCommand(program: Command): void {
     .command('status')
     .description('Show current provider, model, and key status')
     .action(async () => {
+      // Read-only, so a broken file is reported and skipped instead of stopping the whole status.
+      const orWarn = <T extends object>(read: Promise<T>): Promise<Partial<T>> =>
+        read.catch((err: Error) => {
+          display.warn(`${err.message} Claude Code skips this file too.`)
+          return {}
+        })
       const [userSettings, projectSettings] = await Promise.all([
-        readUserSettings(),
-        readProjectSettings(),
+        orWarn(readUserSettings()),
+        orWarn(readProjectSettings()),
       ])
 
       const providers = Object.values(allProviders(await loadUserConfig()))

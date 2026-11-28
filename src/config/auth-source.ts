@@ -83,10 +83,12 @@ export async function readAuthState(
   const sharedPath = getSharedProjectSettingsPath()
   // Run from the home directory, the shared project file is the user file; count it once.
   const sharedIsUser = path.resolve(sharedPath) === path.resolve(CLAUDE_SETTINGS_FILE)
+  // Claude Code skips a settings file it cannot parse, so a broken one adds no credential here either.
+  const orEmpty = <T extends object>(read: Promise<T>): Promise<Partial<T>> => read.catch(() => ({}))
   const [user, shared, local, config] = await Promise.all([
-    readUserSettings(),
-    sharedIsUser ? {} : readProjectSettings(sharedPath),
-    readProjectSettings(getProjectSettingsPath()),
+    orEmpty(readUserSettings()),
+    sharedIsUser ? {} : orEmpty(readProjectSettings(sharedPath)),
+    orEmpty(readProjectSettings(getProjectSettingsPath())),
     readJsonFile<{ oauthAccount?: OauthAccount }>(claudeConfigPath),
   ])
   const source = resolveAuthSource([
