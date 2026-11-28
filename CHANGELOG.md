@@ -1,5 +1,28 @@
 # Changelog
 
+## v0.6.0 — 2026-11-28
+
+### Features
+
+- `ccs run <provider> [region]` starts Claude Code with a provider in this terminal only and writes no settings file, so two terminals can use two providers. Put claude's own flags after `--`, as in `ccs run glm -- --resume` (c79e4f2)
+- `ccs test <provider> [region]` sends one short request for each model ID and prints one line per ID, so you find a wrong key, base URL or model ID before a Claude Code session fails on it. It exits 1 if any ID fails. The provider bills these requests. Qwen's Coding Plan terms ban automated calls, so for Qwen it warns and asks before it sends; `--accept` sends without asking (9fd4389)
+- `--model <id>` works with `ccs run` and `ccs test` too (c79e4f2, 9fd4389)
+- Custom providers: point ccs at an Anthropic-compatible endpoint it does not ship with, such as your own proxy or a LiteLLM or vLLM server. Add one with `ccs provider add <name> <baseUrl> -m <id>` or under `customProviders` in `~/.ccs/config.json`, and remove it with `ccs provider remove <name>`, which keeps the stored key (0253d13)
+
+### Bug Fixes
+
+- With `CLAUDE_CONFIG_DIR` set, ccs now reads and writes the `settings.json`, `.credentials.json`, `.claude.json` and macOS Keychain item that belong to that folder, the same ones Claude Code uses. Before, it changed the default files in `~/.claude` and `~/.claude.json`, which that session never read. `ccs status` shows the folder on a `Config dir` line (105c9cc)
+- `ccs project <provider> -m <id>` now writes the model ID you give. Before, it wrote the provider's default model (c79e4f2)
+- `ccs doctor` accepts Node.js 20, the minimum `package.json` allows (9fd4389)
+- Ctrl+D at a y/N prompt now counts as no. Before, ccs exited 0 without an answer (9fd4389)
+- An unknown provider name (`ccs nope`) prints one error line and exits 1. Before, it printed a stack trace (0253d13)
+
+### Improvements
+
+- If `~/.ccs/config.json` is not valid JSON or a custom entry has a wrong field, every command stops with one line that names the file and the field, and no command writes to the file until you fix it (0253d13)
+
+**Full Changelog:** https://github.com/yagizdo/cc-provider-switcher/compare/v0.5.0...v0.6.0
+
 ## v0.5.0 — 2026-11-27
 
 ### Features
