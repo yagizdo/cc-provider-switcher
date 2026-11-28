@@ -75,6 +75,7 @@ ccs seed
 
 | Command | Description |
 |---------|-------------|
+| `ccs` | Pick a provider from a list. Move with the arrow keys, press Enter to switch (user-level), or press Esc to leave everything as it is. For a provider with regions you then pick the region from a second list. The top row takes you back to Claude Code's native default. Outside a terminal, such as in a pipe or a script, `ccs` prints the help and exits with 1 |
 | `ccs <provider> [region]` | Switch Claude Code to a provider (user-level) |
 | `ccs project <provider> [region]` | Switch for current project only |
 | `ccs run <provider> [region]` | Start Claude Code with a provider in this terminal only, without changing any settings file. Put claude's own flags after `--`: `ccs run glm -- --resume` |

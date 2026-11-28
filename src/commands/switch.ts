@@ -1,5 +1,5 @@
 import { type Command } from 'commander'
-import { resolveProvider, resolveBaseUrl, getApiKey, withModel, CLAUDE_NATIVE_NAMES } from '../providers/registry.js'
+import { resolveProvider, resolveBaseUrl, getApiKey, withModel, allProviders, loadRegistry, CLAUDE_NATIVE_NAMES } from '../providers/registry.js'
 import { loadUserConfig } from '../config/user-config.js'
 import { writeUserSettings, writeProjectSettings, readUserSettings, clearManagedSettings, type ENV_KEYS } from '../config/claude-settings.js'
 import { describeSettings, readPrevious, recordPrevious } from '../config/state.js'
@@ -80,18 +80,83 @@ async function switchBack(): Promise<void> {
   if (previous.kind === 'provider') return doSwitch(previous.provider, previous.region, 'user', previous.model)
 
   // No y/N as in `ccs reset`: this is the undo, and one more `ccs -` brings the provider back.
+  return switchToNative()
+}
+
+async function switchToNative(): Promise<void> {
   const before = describeSettings((await readUserSettings()).env ?? {}, await loadUserConfig())
-  await recordPrevious(before, previous)
+  await recordPrevious(before, { kind: 'native' })
   await clearManagedSettings('user')
   display.success('Switched to Claude Code\'s native default (user-level)')
 }
 
+// Bare `ccs`. Both ends must be a terminal: keys come from stdin and the list is drawn on stdout.
+async function pickAndSwitch(program: Command): Promise<void> {
+  if (!process.stdin.isTTY || !process.stdout.isTTY) program.help({ error: true })
+
+  const userConfig = await loadUserConfig()
+  const current = describeSettings((await readUserSettings()).env ?? {}, userConfig)
+  const builtin = loadRegistry().providers
+  const keys = Object.keys(allProviders(userConfig))
+  const resolved = keys.map((key) => resolveProvider(key, userConfig))
+  const modelWidth = Math.max(...resolved.map((p) => p.defaultModel.length)) + 2
+  const rows = resolved.map((p) => {
+    const key = p.registryKey
+    // Same rule as buildEnvBlock, so a row without "no key" never fails for a missing key.
+    const hasKey = getApiKey(p, userConfig) !== null || !!p.keyOptional
+    const tags = [current.kind === 'provider' && current.provider === key && 'current', !hasKey && 'no key']
+    return {
+      label: p.name,
+      hint: (p.defaultModel.padEnd(modelWidth) + tags.filter(Boolean).join(', ')).trimEnd(),
+      group: key in builtin ? undefined : 'Custom providers (~/.ccs/config.json)',
+      dim: !hasKey,
+      hasKey,
+    }
+  })
+  const items = [{ label: 'Claude (native default)', hint: current.kind === 'native' ? 'current' : undefined }, ...rows]
+  const at = current.kind === 'native' ? 0 : current.kind === 'provider' ? keys.indexOf(current.provider) + 1 : 1
+  const title = current.kind === 'unknown'
+    ? `Now on ${current.baseUrl}, which matches no provider. Switch to:`
+    : 'Switch Claude Code to (user-level):'
+
+  const picked = await display.select(title, items, at)
+  if (picked === null) return
+  if (picked === 0) return switchToNative()
+
+  const key = keys[picked - 1]
+  const provider = resolved[picked - 1]
+  const named = Object.entries(provider.regions ?? {})
+  // A base URL that is none of the regions (custom provider, override) gets its own row, or the list could never reach it.
+  const regions: [string | undefined, string][] = named.some(([, url]) => url === provider.baseUrl)
+    ? named
+    : [[undefined, provider.baseUrl], ...named]
+  let region: string | undefined
+  // Without a key the switch stops at "No API key" anyway; asking for a region first would be wasted.
+  if (named.length && rows[picked - 1].hasKey) {
+    const now = current.kind === 'provider' && current.provider === key ? current.region : undefined
+    // describeSettings leaves the region out when the URL is the base URL.
+    const start = regions.findIndex(([name, url]) => (now ? name === now : url === provider.baseUrl))
+    const choice = await display.select(
+      `Region for ${provider.name}:`,
+      regions.map(([name, url]) => ({ label: name ?? 'default', hint: url })),
+      Math.max(start, 0)
+    )
+    if (choice === null) return
+    region = regions[choice][0]
+  }
+  await doSwitch(key, region, 'user')
+}
+
 export function registerSwitchCommand(program: Command): void {
   program
-    .argument('<provider>', 'Provider name or alias')
+    .argument('[provider]', 'Provider name or alias')
     .argument('[region]', 'Optional region (global, china, etc.)')
     .option('-m, --model <id>', 'Use this model ID for all of sonnet/opus/haiku')
-    .action(async (provider: string, region: string | undefined, opts: { model?: string }) => {
+    .action(async (provider: string | undefined, region: string | undefined, opts: { model?: string }) => {
+      if (provider === undefined) {
+        if (opts.model) throw new Error('"--model" needs a provider: ccs <provider> -m <id>')
+        return pickAndSwitch(program)
+      }
       if (provider === '-') {
         if (region || opts.model) throw new Error('"ccs -" takes no region or --model.')
         return switchBack()
